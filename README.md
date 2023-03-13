@@ -1,5 +1,4 @@
-# Meetup
-# `<name of application here>`
+# Meetup Clone
 
 ## Database Schema Design
 
