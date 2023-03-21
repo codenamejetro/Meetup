@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/codenamejetro/Meetup/issues"
   },
-  "homepage": "https://github.com/codenamejetro/Meetup#readme"
+  "homepage": "https://github.com/codenamejetro/Meetup#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3"
+  }
 }
