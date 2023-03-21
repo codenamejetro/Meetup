@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       references: {model: 'Groups'}
     },
-    status: DataTypes.ENUM(('organizer', 'co-host', 'member', 'pending')),
+    status: DataTypes.ENUM('organizer', 'co-host', 'member', 'pending'),
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   }, {

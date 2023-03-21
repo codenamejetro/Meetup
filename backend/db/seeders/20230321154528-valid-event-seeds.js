@@ -1,5 +1,4 @@
 'use strict';
-
 const { Event } = require('../models')
 
 const validEvent = [
@@ -30,7 +29,7 @@ const validEvent = [
     groupId: 3,
     name: 'Frieren',
     description: 'Primordial eternity',
-    type: 'in person',
+    type: 'online',
     capacity: '10',
     price: 87,
     startDate: '2023-5-11',
@@ -54,7 +53,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let eventInfo of validEvent) {
       try {
-        await Attendance.destroy({
+        await Event.destroy({
           where: eventInfo
         });
       } catch (err) {

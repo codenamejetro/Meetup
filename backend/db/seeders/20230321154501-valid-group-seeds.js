@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict'
 const { Group } = require('../models')
 
 const validGroup = [

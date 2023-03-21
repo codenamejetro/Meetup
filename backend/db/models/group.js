@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     about: DataTypes.STRING,
-    type: DataTypes.ENUM(('in person', 'online')),
+    type: DataTypes.ENUM('in person', 'online'),
     private: DataTypes.BOOLEAN,
     city: DataTypes.STRING,
     state: DataTypes.STRING,

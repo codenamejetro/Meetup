@@ -24,7 +24,7 @@ const validMembership = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await Membership.bulkCreate(validAttendance, {
+      await Membership.bulkCreate(validMembership, {
         validate: true,
       });
     } catch (err) {
