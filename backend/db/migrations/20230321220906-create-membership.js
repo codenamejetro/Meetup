@@ -17,12 +17,12 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        references: {model: 'Users'}
+        references: {model: 'Users', key: 'id'}
 
       },
       groupId: {
         type: Sequelize.INTEGER,
-        references: {model: 'Groups'}
+        references: {model: 'Groups', key: 'id'}
       },
       status: {
         type: Sequelize.ENUM(('organizer', 'co-host', 'member', 'pending'))
