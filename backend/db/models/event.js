@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     groupId: {
       type: DataTypes.INTEGER,
-      references: {model: 'Groups'}
+      references: {model: 'Groups', key: 'id'}
     },
     name: DataTypes.STRING,
     description: DataTypes.STRING,

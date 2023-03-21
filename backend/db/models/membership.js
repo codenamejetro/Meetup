@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
   Membership.init({
     userId: {
       type: DataTypes.INTEGER,
-      references: {model: 'Users'}
+      references: {model: 'Users', key: 'id'}
     },
     groupId: {
       type: DataTypes.INTEGER,
-      references: {model: 'Groups'}
+      references: {model: 'Groups', key: 'id'}
     },
     status: DataTypes.ENUM('organizer', 'co-host', 'member', 'pending'),
     createdAt: DataTypes.DATE,
