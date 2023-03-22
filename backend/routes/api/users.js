@@ -31,7 +31,7 @@ const validateSignup = [
   // })
 
 
-
+//sign up
 router.post(
     '',
     validateSignup,

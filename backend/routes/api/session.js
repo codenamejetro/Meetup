@@ -17,9 +17,8 @@ const validateLogin = [
     handleValidationErrors
   ];
 
-router.get(
-    '/',
-    (req, res) => {
+//get current user
+router.get('/', (req, res) => {
       const { user } = req;
       if (user) {
         const safeUser = {
@@ -36,6 +35,7 @@ router.get(
     }
   );
 
+  //log in
   router.post('/', validateLogin, async (req, res, next) => {
       const { credential, password } = req.body;
 
@@ -72,6 +72,7 @@ router.get(
       });
     }
   );
+
 
 
   router.delete(
