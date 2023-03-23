@@ -17,7 +17,7 @@ module.exports = {
         organizerId: 1,
         name: 'group1',
         about: 'fun in the Bay Area',
-        type: 'in_person',
+        type: 'online',
         private: true,
         city: 'San Francisco',
         state: 'California'
