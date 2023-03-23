@@ -1,13 +1,18 @@
 'use strict';
 const { Event } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validEvent = [
   {
     venueId: 1,
     groupId: 1,
     name: 'Sousou',
     description: 'Magic and fun',
-    type: 'in person',
+    type: 'In person',
     capacity: '10',
     price: 87,
     startDate: '2023-1-11',
@@ -18,7 +23,7 @@ const validEvent = [
     groupId: 2,
     name: 'No',
     description: 'Counting numbers',
-    type: 'online',
+    type: 'Online',
     capacity: '10',
     price: 87,
     startDate: '2023-3-11',
@@ -29,7 +34,7 @@ const validEvent = [
     groupId: 3,
     name: 'Frieren',
     description: 'Primordial eternity',
-    type: 'online',
+    type: 'Online',
     capacity: '10',
     price: 87,
     startDate: '2023-5-11',
@@ -41,7 +46,7 @@ const validEvent = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await Event.bulkCreate(validEvent, {
+      await Event.bulkCreate(validEvent, options, {
         validate: true,
       });
     } catch (err) {
@@ -53,7 +58,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let eventInfo of validEvent) {
       try {
-        await Event.destroy({
+        await Event.destroy(options, {
           where: eventInfo
         });
       } catch (err) {

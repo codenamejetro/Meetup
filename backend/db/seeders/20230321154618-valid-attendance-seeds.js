@@ -2,6 +2,11 @@
 
 const { Attendance } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validAttendance = [
   {
     eventId: 1,
@@ -24,7 +29,7 @@ const validAttendance = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await Attendance.bulkCreate(validAttendance, {
+      await Attendance.bulkCreate(validAttendance, options, {
         validate: true,
       });
     } catch (err) {
@@ -36,7 +41,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let attendanceInfo of validAttendance) {
       try {
-        await Attendance.destroy({
+        await Attendance.destroy(options, {
           where: attendanceInfo
         });
       } catch (err) {

@@ -1,12 +1,17 @@
 'use strict'
 const { Group } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validGroup = [
   {
     organizerId: 1,
     name: 'group1',
     about: 'fun in the Bay Area',
-    type: 'in person',
+    type: 'In person',
     private: true,
     city: 'San Francisco',
     state: 'California'
@@ -15,7 +20,7 @@ const validGroup = [
     organizerId: 2,
     name: 'group2',
     about: 'going crazy in Florida',
-    type: 'online',
+    type: 'Online',
     private: false,
     city: 'Tallahassee',
     state: 'Florida'
@@ -24,7 +29,7 @@ const validGroup = [
     organizerId: 3,
     name: 'group3',
     about: 'Michigan peeps',
-    type: 'online',
+    type: 'Online',
     private: false,
     city: 'Lansing',
     state: 'Michigan'
@@ -35,7 +40,7 @@ const validGroup = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await Group.bulkCreate(validGroup, {
+      await Group.bulkCreate(validGroup, options, {
         validate: true,
       });
     } catch (err) {
@@ -47,7 +52,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let groupInfo of validGroup) {
       try {
-        await Group.destroy({
+        await Group.destroy(options, {
           where: groupInfo
         });
       } catch (err) {

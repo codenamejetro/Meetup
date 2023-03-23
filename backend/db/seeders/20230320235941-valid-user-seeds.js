@@ -35,7 +35,7 @@ const validUser = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await User.bulkCreate(validUser, {
+      await User.bulkCreate(validUser, options, {
         validate: true,
       });
     } catch (err) {
@@ -47,7 +47,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let userInfo of validUser) {
       try {
-        await User.destroy({
+        await User.destroy(options, {
           where: userInfo
         });
       } catch (err) {

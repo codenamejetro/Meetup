@@ -2,6 +2,11 @@
 
 const { Venue } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validVenue = [
   {
     groupId: '1',
@@ -33,7 +38,7 @@ const validVenue = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await Venue.bulkCreate(validVenue, {
+      await Venue.bulkCreate(validVenue, options, {
         validate: true,
       });
     } catch (err) {
@@ -45,7 +50,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let venueInfo of validVenue) {
       try {
-        await Venue.destroy({
+        await Venue.destroy(options, {
           where: venueInfo
         });
       } catch (err) {

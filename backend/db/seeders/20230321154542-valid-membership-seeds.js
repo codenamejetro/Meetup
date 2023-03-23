@@ -2,6 +2,11 @@
 
 const { Membership } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validMembership = [
   {
     userId: 1,
@@ -24,7 +29,7 @@ const validMembership = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await Membership.bulkCreate(validMembership, {
+      await Membership.bulkCreate(validMembership, options, {
         validate: true,
       });
     } catch (err) {
@@ -36,7 +41,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let membershipInfo of validMembership) {
       try {
-        await Membership.destroy({
+        await Membership.destroy(options, {
           where: membershipInfo
         });
       } catch (err) {

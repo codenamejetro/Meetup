@@ -2,6 +2,11 @@
 
 const { EventImage } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validEventImage = [
   {
     eventId: 1,
@@ -24,7 +29,7 @@ const validEventImage = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await EventImage.bulkCreate(validEventImage, {
+      await EventImage.bulkCreate(validEventImage, options, {
         validate: true,
       });
     } catch (err) {
@@ -36,7 +41,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let eventImageInfo of validEventImage) {
       try {
-        await EventImage.destroy({
+        await EventImage.destroy(options, {
           where: eventImageInfo
         });
       } catch (err) {

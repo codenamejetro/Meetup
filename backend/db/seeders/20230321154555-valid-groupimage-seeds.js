@@ -2,6 +2,11 @@
 
 const { GroupImage } = require('../models')
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 const validGroupImage = [
   {
     groupId: '1',
@@ -24,7 +29,7 @@ const validGroupImage = [
 module.exports = {
   async up (queryInterface, Sequelize) {
     try {
-      await GroupImage.bulkCreate(validGroupImage, {
+      await GroupImage.bulkCreate(validGroupImage, options, {
         validate: true,
       });
     } catch (err) {
@@ -36,7 +41,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     for (let groupImageInfo of validGroupImage) {
       try {
-        await GroupImage.destroy({
+        await GroupImage.destroy(options, {
           where: groupImageInfo
         });
       } catch (err) {

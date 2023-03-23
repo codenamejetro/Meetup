@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -17,8 +17,8 @@ const validateLogin = [
     handleValidationErrors
   ];
 
-//get current user
-router.get('/', (req, res) => {
+//get current user //work on auth
+router.get('/', requireAuth, (req, res) => {
       const { user } = req;
       if (user) {
         const safeUser = {
@@ -72,8 +72,6 @@ router.get('/', (req, res) => {
       });
     }
   );
-
-
 
   router.delete(
     '/',
