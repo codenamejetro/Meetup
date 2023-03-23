@@ -7,53 +7,40 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
-const validUser = [
-  {
-    firstName: 'Kevin',
-    lastName: 'Penkin',
-    username: 'kevinP',
-    email: 'kevin.p@gmail.com',
-    hashedPassword: bcrypt.hashSync('hashedpw1')
-  },
-  {
-    firstName: 'Hiroyuki',
-    lastName: 'Sawano',
-    username: 'hiroyukiS',
-    email: 'hiroyuki.s@gmail.com',
-    hashedPassword: bcrypt.hashSync('hashedpw2')
-  },
-  {
-    firstName: 'Kohta',
-    lastName: 'Yamamoto',
-    username: 'kohtaY',
-    email: 'kevin.y@gmail.com',
-    hashedPassword: bcrypt.hashSync('hashedpw3')
-  }
-]
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    try {
-      await User.bulkCreate(validUser, options, {
-        validate: true,
-      });
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+  up: async (queryInterface, Sequelize) => {
+    options.tableName = 'Users';
+    return queryInterface.bulkInsert(options, [
+        {
+          firstName: 'Kevin',
+          lastName: 'Penkin',
+          username: 'kevinP',
+          email: 'kevin.p@gmail.com',
+          hashedPassword: bcrypt.hashSync('hashedpw1')
+        },
+        {
+          firstName: 'Hiroyuki',
+          lastName: 'Sawano',
+          username: 'hiroyukiS',
+          email: 'hiroyuki.s@gmail.com',
+          hashedPassword: bcrypt.hashSync('hashedpw2')
+        },
+        {
+          firstName: 'Kohta',
+          lastName: 'Yamamoto',
+          username: 'kohtaY',
+          email: 'kevin.y@gmail.com',
+          hashedPassword: bcrypt.hashSync('hashedpw3')
+        }
+      ], {});
   },
 
-  async down (queryInterface, Sequelize) {
-    for (let userInfo of validUser) {
-      try {
-        await User.destroy(options, {
-          where: userInfo
-        });
-      } catch (err) {
-        console.log(err);
-        throw err;
-      }
-    }
-  },
+  down: async (queryInterface, Sequelize) => {
+    options.tableName = 'Users';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      username: { [Op.in]: ['KevinP', 'hiroyukiS', 'kohtaY'] }
+    }, {});
+  }
 };

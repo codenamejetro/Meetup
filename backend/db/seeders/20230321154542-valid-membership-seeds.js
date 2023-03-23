@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require("bcryptjs");
 
 const { Membership } = require('../models')
 
@@ -7,47 +8,34 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
-const validMembership = [
-  {
-    userId: 1,
-    groupId: 1,
-    status: 'organizer'
-  },
-  {
-    userId: 2,
-    groupId: 2,
-    status: 'co-host'
-  },
-  {
-    userId: 3,
-    groupId: 3,
-    status: 'member'
-  }
-]
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    try {
-      await Membership.bulkCreate(validMembership, options, {
-        validate: true,
-      });
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+  up: async (queryInterface, Sequelize) => {
+    options.tableName = 'Memberships';
+    return queryInterface.bulkInsert(options, [
+      {
+        userId: 1,
+        groupId: 1,
+        status: 'organizer'
+      },
+      {
+        userId: 2,
+        groupId: 2,
+        status: 'co-host'
+      },
+      {
+        userId: 3,
+        groupId: 3,
+        status: 'member'
+      }
+    ], {});
   },
 
-  async down (queryInterface, Sequelize) {
-    for (let membershipInfo of validMembership) {
-      try {
-        await Membership.destroy(options, {
-          where: membershipInfo
-        });
-      } catch (err) {
-        console.log(err);
-        throw err;
-      }
-    }
-  },
+  down: async (queryInterface, Sequelize) => {
+    options.tableName = 'Memberships';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      status: { [Op.in]: ['organizer', 'co-host', 'member', 'pending'] }
+    }, {});
+  }
 };
