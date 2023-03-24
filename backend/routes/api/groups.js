@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Group, User, Venue, Membership, GroupImage } = require('../../db/models');
+const { Group, User, Venue, Membership, GroupImage, Event, Attendance, EventImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -57,20 +57,157 @@ const validateCreateVenue = [
         .withMessage('Longitude is not valid'),
     handleValidationErrors
 ]
+const validateCreateEvent = [
+    check('venue')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isIn()
+        .withMessage('Venue does not exist'),
+    check('name')
+        .exists({ checkFalsy: true })
+        .notEmpty().isLength({ min: 5 })
+        .withMessage('Name must be at least 5 characters'),
+    check('type').exists({ checkFalsy: true })
+        .exists({ checkFalsy: true })
+        .notEmpty().isIn(['Online', 'In person'])
+        .withMessage('Type must be Online or In person'),
+    check('capacity')
+        .notEmpty()
+        .isInt()
+        .withMessage(`Capacity must be an integer`),
+    check('price')
+        .exists({ checkFalsy: true })
+        .notEmpty().isNumeric()
+        .withMessage('Price is invalid'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Description is required'),
+    check('startdDate')
+        .exists({ checkFalsy: true })
+        .notEmpty().isDate().isAfter('')
+        .withMessage('Start date must be in the future'),
+    check('endDate')
+        .exists({ checkFalsy: true })
+        .notEmpty().isDate().isBefore('startDate')
+        .withMessage('End date is less than start date'),
+    handleValidationErrors
+]
 
-//Get all venues for a group by group id
-router.get('/:id/venues', requireAuth, async (req, res, next) => {
-    const theGroup = await Group.findByPk(req.params.id)
-    if (!theGroup) {
-        const err = new Error(`Group couldn't be found`);
-        err.status = 404;
-        return next(err);
-    }
-    const Venues = await Venue.findAll({
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        where: { groupId: theGroup.id }
+//get members of group by group Id
+router.get('/:id/members', async (req, res) => {
+    // const finArr = []
+    // const someObj = {}
+    const membersArr = []
+    const theGroup = await Group.findByPk(req.params.id, {
+        attribute: ["id"]
     })
-    res.json({ Venues })
+    const groupJSON = theGroup.toJSON()
+
+    const theMembers = await Membership.findAll({
+        where: {groupId: groupJSON.id}
+    })
+    theMembers.forEach(member => {
+        membersArr.push(member.toJSON())
+    })
+    console.log(membersArr)
+
+    // // membersArr.forEach(member => {
+    // //     someObj[member["userId"]] = member["id"]
+    // // })
+    // console.log(...membersArr)
+
+    // // const theUsers = await User.findAll({
+    // //     attribute: {exclude: ["createdAt", "updatedAt"]},
+    // //     where: {id: membersArr.id}
+    // // })
+    // theUsers.forEach(user => {
+    //     finArr.push(user.toJSON())
+    // })
+    const theUsers = await User.findAll({
+        where: {id: membersArr.usersId}
+    })
+
+
+    res.json({Members: finArr})
+})
+
+//Get all venues by group Id //authorize organizer cohost
+router.get('/:id/venues', requireAuth, async (req, res) => {
+
+})
+
+//Get all events for a group by group id //check why .toString() is needed
+router.get('/:id/events', async (req, res, next) => {
+    const finalArr = []
+    const countAttObj = {}
+    const imgObj = {}
+    const groupObj = {}
+    const venueObj = {}
+
+    const theEvents = await Event.findAll({
+        attributes: {exclude: ['createdAt', 'updatedAt']}
+    })
+    // console.log(theEvents)
+
+    const attendances = await Attendance.findAll()
+    attendances.forEach(attendee => {
+        if (countAttObj[attendee["eventId"]]) countAttObj[attendee["eventId"]] += 1
+        else countAttObj[attendee["eventId"]] = 1
+    })
+
+    const eventImages = await EventImage.findAll()
+    eventImages.forEach(eachImg => {
+        const imgJSON = eachImg.toJSON()
+        if (!imgObj[imgJSON["eventId"]]) imgObj[imgJSON["eventId"]] = imgJSON.url
+    })
+
+    const groups = await Group.findAll({
+        attributes: [ "id", "name", "city", "state" ]
+    })
+    groups.forEach(eachGroup => {
+        const groupJSON = eachGroup.toJSON()
+        if (!groupObj[groupJSON["id"]]) groupObj[groupJSON["id"]] = groupJSON
+    })
+
+    const venues = await Venue.findAll({
+        attributes: [ "id", "city", "state" ]
+    })
+    venues.forEach(eachVenue => {
+        const venueJSON = eachVenue.toJSON()
+        if (!venueObj[venueJSON["id"]]) venueObj[venueJSON["id"]] = venueJSON
+    })
+
+    theEvents.forEach(event => {
+        const eventJSON = event.toJSON()
+        // console.log
+        console.log(eventJSON["groupId"])
+        // console.log(req.params.id)
+        if (eventJSON["groupId"].toString() === req.params.id.toString()) {
+            finalArr.push(eventJSON)
+        }
+    })
+
+    // console.log(finalArr)
+    finalArr.forEach(eachEvent => {
+        let trackId = eachEvent["id"]
+        if (!eachEvent.numAttending) {
+            eachEvent.numAttending = countAttObj[trackId]
+        }
+        if (!eachEvent.previewImage) {
+            eachEvent.previewImage = imgObj[trackId]
+        }
+        if (!eachEvent.Group) {
+            eachEvent.Group = groupObj[trackId]
+        }
+        if (!eachEvent.Venue) {
+            eachEvent.Venue = venueObj[trackId]
+        }
+    });
+
+
+
+    res.json({Events: finalArr})
 })
 
 //GET all groups joined or organized by the current user
@@ -182,28 +319,20 @@ router.get('/', async (req, res) => {
     res.json({ "Groups": finalArr })
 })
 
-//Create venue for group specified by id
+//Create venue for group specified by id //authorize organizer cohost
 router.post('/:id/venues', validateCreateVenue, requireAuth, async (req, res, next) => {
     const { user } = req
     const theGroup = await Group.findByPk(req.params.id)
+    console.log(theGroup.toJSON())
+    console.log(user.id)
     if (!theGroup) {
         const err = new Error(`Group couldn't be found`);
         err.status = 404;
         return next(err);
     }
 
-    const checkIfCoHost = () => {
-        const theMembership = Membership.findAll({
-            where: { userId: req.user.id }
-        })
-        if (theMembership.status === "co-host" && theMembership.groupId === theGroup) return true
-    }
 
-    if (req.user.id !== theGroup.organizerId && !checkIfCoHost) {
-        const err = new Error(`Forbidden`);
-        err.status = 403;
-        return next(err);
-    }
+
 
     else {
         const { address, city, state, lat, lng } = req.body
@@ -211,7 +340,6 @@ router.post('/:id/venues', validateCreateVenue, requireAuth, async (req, res, ne
             where: { userId: user.id }
         })
         const newVenue = await Venue.create({ groupId: theGroupWhereUserId["groupId"], address, city, state, lat, lng })
-        console.log(theGroupWhereUserId, "Hi")
 
         validVenue = {
             id: newVenue.id,
@@ -222,7 +350,7 @@ router.post('/:id/venues', validateCreateVenue, requireAuth, async (req, res, ne
             lat: newVenue.lat,
             lng: newVenue.lng,
         }
-        await setTokenCookie(res, validVenue);
+        // await setTokenCookie(res, validVenue);
 
         return res.json(validVenue);
 
@@ -256,6 +384,48 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
         const err = new Error(`Forbidden`);
         err.status = 403;
         return next(err);
+    }
+})
+
+//Create event for group specified by id //validateCreateEvent needs work //organizer cohost
+router.post('/:id/events', validateCreateEvent ,requireAuth, async (req, res, next) => {
+    const { user } = req
+    const theGroup = await Group.findByPk(req.params.id)
+    if (!theGroup) {
+        const err = new Error(`Group couldn't be found`);
+        err.status = 404;
+        return next(err);
+    }
+
+    const checkIfCoHost = () => {
+        const theMembership = Membership.findAll({
+            where: { userId: req.user.id }
+        })
+        if (theMembership.status === "co-host" && theMembership.groupId === theGroup) return true
+    }
+
+    if (req.user.id !== theGroup.organizerId && !checkIfCoHost()) {
+        const err = new Error(`Forbidden`);
+        err.status = 403;
+        return next(err);
+    } else {
+        const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+        const newEvent = await Event.create({ groupId: req.params.id, venueId , name, type, capacity, price, description, startDate, endDate })
+
+        const validEvent = {
+            id: newEvent.id,
+            groupId: req.params.id,
+            venueId: newEvent.venueId,
+            name: newEvent.name,
+            type: newEvent.type,
+            capacity: newEvent.capacity,
+            price: newEvent.price,
+            description: newEvent.description,
+            startDate: newEvent.startDate,
+            endDate: newEvent.endDate
+        }
+
+        res.json(validEvent)
     }
 })
 
@@ -333,45 +503,34 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 
 module.exports = router;
 
-// router.get('/', async (req, res) => {
-//     const finalArr = []
-//     const members = await Membership.findAll()
 
-//     const groups = await Group.findAll()
-//     const countGroupArr = []
-//     const countGroupObj = {}
-//     console.log(members)
-//     for (let i = 0; i < members.length; i++) {
-//         countGroupArr[i] = members[i]["groupId"];
-
-//     }
-//     for (let i = 1; i < countGroupArr.length + 1; i++) {
-//         if (countGroupObj[i]) countGroupObj[i] += 1
-//         else countGroupObj[i] = 1
-//     }
-
-
-//     const groupImages = await GroupImage.findAll()
-//     const urlObj = {}
-//     for (let i = 0; i < groupImages.length; i++) {
-//         urlObj[i + 1] = groupImages[i]["url"];
-
-//     }
-
-//     groups.forEach(group => {
-//         finalArr.push(group.toJSON())
-//     })
-
-//     finalArr.forEach(eachGroup => {
-//         let trackId = eachGroup["id"]
-//         if (!eachGroup.numMembers) {
-//             eachGroup.numMembers = countGroupObj[trackId]
-//         }
-//         if (!eachGroup.previewImage) {
-//             eachGroup.previewImage = urlObj[trackId]
-//         }
-
-//     });
-
-//     res.json({ "Groups": finalArr })
+// const theMembershipId = await Membership.findOne({
+//     attributes: ["id"],
+//     where: { userId: user.id }
 // })
+// const membershipIdJSON = theMembershipId.toJSON()
+
+// const theMembership = await Membership.findOne({
+//     where: {id: membershipIdJSON.id}
+// })
+
+// if (!(theMembership.groupId === theGroup && theMembership.status !== 'organizer') && (!theMembership.groupId === theGroup && theMembership.status !== 'co-host')) {
+//     const err = new Error(`Forbidden`);
+//     err.status = 403;
+//     return next(err);
+// }
+
+// const checkIfCoHost = () => {
+//     const theMembership = Membership.findAll({
+//         where: { userId: user.id }
+//     })
+//     if (theMembership.status === "co-host" && theMembership.groupId === theGroup) {
+//         return true
+//     }
+// }
+
+// if (user.id !== theGroup.organizerId && !checkIfCoHost) {
+//     const err = new Error(`Forbidden`);
+//     err.status = 403;
+//     return next(err);
+// }

@@ -29,7 +29,7 @@ const validateCreateVenue = [
     handleValidationErrors
 ]
 
-//edit venue by id
+//edit venue by id //authorize organizer cohost
 router.put('/:id', validateCreateVenue, requireAuth, async (req, res, next) => {
     const theVenue = await Venue.findByPk(req.params.id)
     if (!theVenue) {

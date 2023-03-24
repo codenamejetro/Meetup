@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     about: DataTypes.STRING,
     type: {
-      type: DataTypes.ENUM('online', 'in_person'),
+      type: DataTypes.ENUM('Online', 'In person'),
       validate: {
-        isIn: [['online','in_person']]
+        isIn: [['Online','In person']]
       }
     },
     private: DataTypes.BOOLEAN,
