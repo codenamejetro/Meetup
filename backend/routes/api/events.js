@@ -6,10 +6,9 @@ const { Group, User, Venue, Membership, GroupImage, Event, Attendance, EventImag
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const validateCreateEvent = [
-    check('venue')
+    check('venueId')
         .exists({ checkFalsy: true })
         .notEmpty()
-        .isIn()
         .withMessage('Venue does not exist'),
     check('name')
         .exists({ checkFalsy: true })
@@ -31,13 +30,18 @@ const validateCreateEvent = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .withMessage('Description is required'),
-    check('startdDate')
+    check('startDate')
         .exists({ checkFalsy: true })
-        .notEmpty().isDate().isAfter('')
+        .notEmpty().isISO8601()
         .withMessage('Start date must be in the future'),
     check('endDate')
         .exists({ checkFalsy: true })
-        .notEmpty().isDate().isBefore('startDate')
+        .notEmpty().isISO8601().custom((value, {req}) => {
+            if(Date.parse(value) < Date.parse(req.body.startDate)) {
+                throw new Error('End date is less than start date')
+            }
+            return true
+        })
         .withMessage('End date is less than start date'),
     handleValidationErrors
 ]
@@ -141,14 +145,52 @@ router.get('/:id', async (req, res) => {
 
 //Get all events //start date end date not showing up null in response
 router.get('/', async (req, res) => {
+    let { page, size, name, type, startDate } = req.query;
+
+    const where = {}
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    if (Number.isNaN(page)) page = 0;
+    if (Number.isNaN(size)) size = 20;
+
+    const pagination = {};
+    if (page >= 0 && size >= 0) {
+        pagination.limit = size;
+        pagination.offset = size * (page - 1);
+    }
+    if (page >= 11) {
+        pagination.offset = size * 10;
+    }
+    if (size >= 21) {
+        pagination.limit = 20;
+    }
+
+    req.pagination = pagination
+
     const finalArr = []
     const countAttObj = {}
     const imgObj = {}
     const groupObj = {}
     const venueObj = {}
 
+    if (name && name !== '') {
+        where.name = name
+    }
+
+    if (type && type !== '') {
+        where.type = type
+    }
+
+    if (startDate && startDate !== '') {
+        where.startDate = startDate
+    }
+
     const theEvents = await Event.findAll({
-        attributes: { exclude: ['createdAt', 'updatedAt'] }
+        where,
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        ...pagination
     })
 
     const attendances = await Attendance.findAll()
@@ -201,7 +243,9 @@ router.get('/', async (req, res) => {
 
 
 
-    res.json({ Events: finalArr })
+    res.json({ Events: finalArr
+        // , page, size
+    })
 })
 
 //Request to attend event based on event id
@@ -340,8 +384,8 @@ router.put('/:id/attendance', requireAuth, async (req, res, next) => {
     })
     if (!theAttendance) {
         const err = new Error(`Attendance between the user and the event does not exist`);
-            err.status = 404;
-            return next(err);
+        err.status = 404;
+        return next(err);
     }
 
     theAttendance.status = status
@@ -353,7 +397,7 @@ router.put('/:id/attendance', requireAuth, async (req, res, next) => {
 })
 
 //Edit an event by id
-router.put('/:id', requireAuth, async (req, res, next) => {
+router.put('/:id', validateCreateEvent, requireAuth, async (req, res, next) => {
     const { user } = req
     const theEvent = await Event.findByPk(req.params.id, {
         attributes: { exclude: ["createdAt", "updatedAt"] }
@@ -437,8 +481,8 @@ router.delete('/:id/attendance', requireAuth, async (req, res, next) => {
     })
     if (!theAttendance) {
         const err = new Error(`Attendance does not exist for this user`);
-            err.status = 404;
-            return next(err);
+        err.status = 404;
+        return next(err);
     }
 
     const organizerMemberArr = []
@@ -456,12 +500,12 @@ router.delete('/:id/attendance', requireAuth, async (req, res, next) => {
     organizerMemberArr.push(user.id)
     if (!organizerMemberArr.includes(userId)) {
         const err = new Error(`Only the User or organizer may delete an Attendance`);
-            err.status = 403;
-            return next(err);
+        err.status = 403;
+        return next(err);
     }
 
     theAttendance.destroy()
-    res.json({message: "Successfully deleted attendance from event"})
+    res.json({ message: "Successfully deleted attendance from event" })
 })
 
 //Delete event by id
