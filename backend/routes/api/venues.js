@@ -29,7 +29,7 @@ const validateCreateVenue = [
     handleValidationErrors
 ]
 
-//edit venue by id //authorize organizer cohost
+//edit venue by id
 router.put('/:id', validateCreateVenue, requireAuth, async (req, res, next) => {
     const theVenue = await Venue.findByPk(req.params.id)
     if (!theVenue) {
@@ -37,21 +37,30 @@ router.put('/:id', validateCreateVenue, requireAuth, async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-    const groupIdFromVenue = theVenue.groupId
-    const theGroup = await Group.findOne({
-        where: { id: groupIdFromVenue}
-    })
-    const theMembership = await Membership.findOne({
-        where: {
-            userId: req.user.id,
-            groupId: theGroup.id
-         }
-    })
+    const justUserIdsArr = []
+    const organizerCohostArr = []
+    const membersArr = []
+    const { user } = req
 
-    if (req.user.id !== theGroup.organizerId && !theMembership) {
+    const theMembers = await Membership.findAll({
+        where: {groupId: req.params.id}
+    })
+    theMembers.forEach(member => {
+        membersArr.push(member.toJSON())
+    })
+    membersArr.forEach(member => {
+        if (member.status === 'organizer' || member.status === 'co-host') {
+            organizerCohostArr.push(member)
+        }
+    })
+    organizerCohostArr.forEach(member => {
+        justUserIdsArr.push(member.userId)
+    })
+    if (!justUserIdsArr.includes(user.id)) {
         const err = new Error(`Forbidden`);
         err.status = 403;
         return next(err);
+
     } else {
         const { address, city, state, lat, lng } = req.body
         if (address) theVenue.address = address
