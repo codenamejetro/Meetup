@@ -464,7 +464,7 @@ router.post('/:id/venues', validateCreateVenue, requireAuth, async (req, res, ne
             lat: newVenue.lat,
             lng: newVenue.lng,
         }
-        await setTokenCookie(res, validVenue);
+        // await setTokenCookie(res, validVenue);
 
         return res.json(validVenue);
 
@@ -490,7 +490,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
             preview: newGroupImg.preview
         }
 
-        await setTokenCookie(res, validGroupImg);
+        // await setTokenCookie(res, validGroupImg);
 
         return res.json(validGroupImg);
     }
@@ -581,7 +581,8 @@ router.post('/', validateCreateGroup, requireAuth, async (req, res) => {
         updatedAt: group.updatedAt
     };
 
-    await setTokenCookie(res, validGroup);
+    // await setTokenCookie(res, validGroup);
+
 
     return res.json(validGroup);
 })
