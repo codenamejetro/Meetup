@@ -52,15 +52,44 @@ router.get('/:id/attendees', async (req, res, next) => {
     const userIdArr = []
     const attendeeArr = []
     const statusObj = {}
+    let booleanCheck = false
     const theEvent = await Event.findByPk(req.params.id, {
-        attributes: ["id"]
+        // attributes: ["id"]
     })
+    // console.log(theEvent.toJSON())
     if (!theEvent) {
         const err = new Error(`Event couldn't be found`);
         err.status = 404;
         return next(err);
     }
+
+    const justUserIdsArr = []
+    const organizerCohostArr = []
+    const membersArr = []
+    const { user } = req
+
+    const theMembers = await Membership.findAll({
+        where: { groupId: theEvent.groupId }
+    })
+
+    theMembers.forEach(member => {
+        membersArr.push(member.toJSON())
+    })
+    membersArr.forEach(member => {
+        if (member.status === 'organizer' || member.status === 'co-host') {
+            organizerCohostArr.push(member)
+        }
+    })
+    organizerCohostArr.forEach(member => {
+        justUserIdsArr.push(member.userId)
+    })
+
+    if (justUserIdsArr.includes(user.id)) {
+        booleanCheck = true
+    }
+    // console.log("booleanCheck: ", booleanCheck)
     const theEventId = theEvent.toJSON()["id"]
+    // console.log("thEventId: ", theEventId)
 
     const theAttendees = await Attendance.findAll({
         where: { eventId: theEventId }
@@ -90,6 +119,16 @@ router.get('/:id/attendees', async (req, res, next) => {
             user.Attendance = { status: statusObj[trackId] }
         }
     })
+    // console.log(finArr)
+    if (!booleanCheck) {
+        for (let i = 0; i < finArr.length; i++) {
+            const ele = finArr[i];
+            if (ele.Attendance.status === 'pending') {
+                finArr.splice(i, 1)
+                i--
+            }
+        }
+    }
 
     res.json({ Attendees: finArr })
 })
@@ -292,6 +331,7 @@ router.post('/:id/attendance', requireAuth, async (req, res, next) => {
 
 
     const theAttendance = await Attendance.create({ eventId: parseInt(req.params.id), userId: user.id, status: 'pending' })
+    // console.log(theAttendance)
     const validAttendance = {
         eventId: theAttendance.eventId,
         userId: theAttendance.userId,

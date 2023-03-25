@@ -104,6 +104,7 @@ router.get('/:id/members', async (req, res, next) => {
     const finArr = []
     const someArr = []
     const membersObj = {}
+    let booleanCheck = false
     const theGroup = await Group.findByPk(req.params.id, {
         attribute: ["id"]
     })
@@ -113,8 +114,9 @@ router.get('/:id/members', async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-
     const groupJSON = theGroup.toJSON()
+
+
 
 
     const theMembers = await Membership.findAll({
@@ -125,10 +127,27 @@ router.get('/:id/members', async (req, res, next) => {
         if (!membersObj[theMember["userId"]]) membersObj[theMember["userId"]] = theMember.status
     })
 
+    const attendanceArr = []
+    const justUserIdsArr = []
+    const organizerCohostArr = []
+    const membersArr = []
+    const { user } = req
 
-    // membersArr.forEach(member => {
-    //     someArr.push(member.userId)
-    // })
+    theMembers.forEach(member => {
+        membersArr.push(member.toJSON())
+    })
+    membersArr.forEach(member => {
+        if (member.status === 'organizer' || member.status === 'co-host') {
+            organizerCohostArr.push(member)
+        }
+    })
+    organizerCohostArr.forEach(member => {
+        justUserIdsArr.push(member.userId)
+    })
+    // console.log(justUserIdsArr)
+    if (justUserIdsArr.includes(user.id)) {
+        booleanCheck = true
+    }
 
     const theUsers = await User.scope(['notDefault']).findAll({
         where: { id: Object.keys(membersObj) }
@@ -138,8 +157,6 @@ router.get('/:id/members', async (req, res, next) => {
         finArr.push(user.toJSON())
     })
 
-    console.log(finArr)
-    console.log(membersObj)
 
     finArr.forEach(member => {
         let trackId = member.id
@@ -147,13 +164,24 @@ router.get('/:id/members', async (req, res, next) => {
             member.Membership = { "status": membersObj[trackId] }
         }
     })
+    // console.log(booleanCheck)
+    if (!booleanCheck) {
+        for (let i = 0; i < finArr.length; i++) {
+            const ele = finArr[i];
+            if (ele.Membership.status === 'pending') {
+                finArr.splice(i, 1)
+                i--
+            }
+        }
+    }
+
 
 
     res.json({ Members: finArr })
 })
 
 //Get all venues by group Id
-router.get('/:id/venues', requireAuth, async (req, res) => {
+router.get('/:id/venues', requireAuth, async (req, res, next) => {
     const theGroup = await Group.findByPk(req.params.id)
 
     if(!theGroup) {
@@ -501,7 +529,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
     }
 })
 
-//Create event for group specified by id //validateCreateEvent needs work
+//Create event for group specified by id
 router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, next) => {
     const { user } = req
     const theGroup = await Group.findByPk(req.params.id)
@@ -518,9 +546,11 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
     const theMembers = await Membership.findAll({
         where: { groupId: req.params.id }
     })
+
     theMembers.forEach(member => {
         membersArr.push(member.toJSON())
     })
+    // console.log(membersArr)
     membersArr.forEach(member => {
         if (member.status === 'organizer' || member.status === 'co-host') {
             organizerCohostArr.push(member)
@@ -529,15 +559,11 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
     organizerCohostArr.forEach(member => {
         justUserIdsArr.push(member.userId)
     })
+    // console.log(organizerCohostArr)
     if (!justUserIdsArr.includes(user.id)) {
         const err = new Error(`Forbidden`);
         err.status = 403;
         return next(err);
-    }
-
-    if(Date.parse(req.body.startDate) < Date.now()) {
-
-
     }
 
     else {
@@ -545,8 +571,8 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
         const newEvent = await Event.create({ groupId: req.params.id, venueId, name, type, capacity, price, description, startDate, endDate })
 
         const validEvent = {
-            id: newEvent.id,
-            groupId: req.params.id,
+            // id: newEvent.id,
+            // groupId: req.params.id,
             venueId: newEvent.venueId,
             name: newEvent.name,
             type: newEvent.type,
@@ -563,10 +589,10 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
 
 //Create a group
 router.post('/', validateCreateGroup, requireAuth, async (req, res) => {
-    // const { user } = req
+    const { user } = req
     const { name, about, type, private, city, state } = req.body
     const group = await Group.create({ name, organizerId: req.user.id, about, type, private, city, state })
-
+    const theMembership = await Membership.create({ userId: user.id, groupId: group.id, status: 'organizer' })
 
     const validGroup = {
         id: group.id,
@@ -587,7 +613,7 @@ router.post('/', validateCreateGroup, requireAuth, async (req, res) => {
     return res.json(validGroup);
 })
 
-//Chage membership status for group based on group id
+//Change membership status for group based on group id
 router.put('/:id/membership', requireAuth, async (req, res, next) => {
     const { user } = req
     const anArr = []
@@ -650,7 +676,7 @@ router.put('/:id/membership', requireAuth, async (req, res, next) => {
         }
     }
 
-    const theMembership = await Membership.scope(['notDefault']).findOne({
+    const theMembership = await Membership.scope(['notDefault']).findAll({
         where: {
             userId: memberId,
             groupId: req.params.id
@@ -669,7 +695,7 @@ router.put('/:id/membership', requireAuth, async (req, res, next) => {
     anArr.forEach(member => {
         member.status = status
     })
-    console.log(anArr)
+    // console.log(anArr)
 
     res.json(...anArr)
 
