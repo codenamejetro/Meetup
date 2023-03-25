@@ -195,7 +195,7 @@ router.get('/', async (req, res) => {
     if (Number.isNaN(size)) size = 20;
 
     const pagination = {};
-    if (page >= 0 && size >= 0) {
+    if (page >= 1 && size >= 1) {
         pagination.limit = size;
         pagination.offset = size * (page - 1);
     }
@@ -504,6 +504,7 @@ router.put('/:id', validateCreateEvent, requireAuth, async (req, res, next) => {
 router.delete('/:id/attendance', requireAuth, async (req, res, next) => {
     const { user } = req
     const { userId } = req.body
+    // console.log(req.body.userId)
     const theEvent = await Event.findByPk(req.params.id)
 
     if (!theEvent) {
@@ -525,19 +526,22 @@ router.delete('/:id/attendance', requireAuth, async (req, res, next) => {
         return next(err);
     }
 
+
     const organizerMemberArr = []
     const membersArr = []
 
     const theMembers = await Membership.findAll({
-        where: { groupId: req.params.id }
+        where: { groupId: theEvent.groupId }
     })
     theMembers.forEach(member => {
         membersArr.push(member.toJSON())
     })
+    console.log(membersArr)
     membersArr.forEach(member => {
         if (member.status === 'organizer') organizerMemberArr.push(member.userId)
     })
     organizerMemberArr.push(user.id)
+    console.log(organizerMemberArr)
     if (!organizerMemberArr.includes(userId)) {
         const err = new Error(`Only the User or organizer may delete an Attendance`);
         err.status = 403;

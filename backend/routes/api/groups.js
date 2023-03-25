@@ -569,9 +569,10 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
     else {
         const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
         const newEvent = await Event.create({ groupId: req.params.id, venueId, name, type, capacity, price, description, startDate, endDate })
+        const newAttendance = await Attendance.create({ eventId: newEvent.id, userId: user.id, status: 'member'})
 
         const validEvent = {
-            // id: newEvent.id,
+            id: newEvent.id,
             // groupId: req.params.id,
             venueId: newEvent.venueId,
             name: newEvent.name,
