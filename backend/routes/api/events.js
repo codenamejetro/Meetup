@@ -56,7 +56,6 @@ router.get('/:id/attendees', async (req, res, next) => {
     const theEvent = await Event.findByPk(req.params.id, {
         // attributes: ["id"]
     })
-    // console.log(theEvent.toJSON())
     if (!theEvent) {
         const err = new Error(`Event couldn't be found`);
         err.status = 404;
@@ -87,9 +86,7 @@ router.get('/:id/attendees', async (req, res, next) => {
     if (justUserIdsArr.includes(user.id)) {
         booleanCheck = true
     }
-    // console.log("booleanCheck: ", booleanCheck)
     const theEventId = theEvent.toJSON()["id"]
-    // console.log("thEventId: ", theEventId)
 
     const theAttendees = await Attendance.findAll({
         where: { eventId: theEventId }
@@ -119,7 +116,6 @@ router.get('/:id/attendees', async (req, res, next) => {
             user.Attendance = { status: statusObj[trackId] }
         }
     })
-    // console.log(finArr)
     if (!booleanCheck) {
         for (let i = 0; i < finArr.length; i++) {
             const ele = finArr[i];
@@ -331,7 +327,6 @@ router.post('/:id/attendance', requireAuth, async (req, res, next) => {
 
 
     const theAttendance = await Attendance.create({ eventId: parseInt(req.params.id), userId: user.id, status: 'pending' })
-    // console.log(theAttendance)
     const validAttendance = {
         eventId: theAttendance.eventId,
         userId: theAttendance.userId,
@@ -429,7 +424,6 @@ router.put('/:id/attendance', requireAuth, async (req, res, next) => {
     }
 
     theAttendance.status = status
-    // console.log(theAttendance.toJSON())
 
     res.json(theAttendance)
 
@@ -504,7 +498,6 @@ router.put('/:id', validateCreateEvent, requireAuth, async (req, res, next) => {
 router.delete('/:id/attendance', requireAuth, async (req, res, next) => {
     const { user } = req
     const { userId } = req.body
-    // console.log(req.body.userId)
     const theEvent = await Event.findByPk(req.params.id)
 
     if (!theEvent) {
@@ -536,12 +529,10 @@ router.delete('/:id/attendance', requireAuth, async (req, res, next) => {
     theMembers.forEach(member => {
         membersArr.push(member.toJSON())
     })
-    console.log(membersArr)
     membersArr.forEach(member => {
         if (member.status === 'organizer') organizerMemberArr.push(member.userId)
     })
     organizerMemberArr.push(user.id)
-    console.log(organizerMemberArr)
     if (!organizerMemberArr.includes(userId)) {
         const err = new Error(`Only the User or organizer may delete an Attendance`);
         err.status = 403;

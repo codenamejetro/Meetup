@@ -144,7 +144,6 @@ router.get('/:id/members', async (req, res, next) => {
     organizerCohostArr.forEach(member => {
         justUserIdsArr.push(member.userId)
     })
-    // console.log(justUserIdsArr)
     if (justUserIdsArr.includes(user.id)) {
         booleanCheck = true
     }
@@ -164,7 +163,7 @@ router.get('/:id/members', async (req, res, next) => {
             member.Membership = { "status": membersObj[trackId] }
         }
     })
-    // console.log(booleanCheck)
+
     if (!booleanCheck) {
         for (let i = 0; i < finArr.length; i++) {
             const ele = finArr[i];
@@ -236,7 +235,6 @@ router.get('/:id/events', async (req, res, next) => {
     const theEvents = await Event.findAll({
         attributes: { exclude: ['createdAt', 'updatedAt'] }
     })
-    // console.log(theEvents)
 
     const attendances = await Attendance.findAll()
     attendances.forEach(attendee => {
@@ -268,15 +266,12 @@ router.get('/:id/events', async (req, res, next) => {
 
     theEvents.forEach(event => {
         const eventJSON = event.toJSON()
-        // console.log
-        console.log(eventJSON["groupId"])
-        // console.log(req.params.id)
+
         if (eventJSON["groupId"].toString() === req.params.id.toString()) {
             finalArr.push(eventJSON)
         }
     })
 
-    // console.log(finalArr)
     finalArr.forEach(eachEvent => {
         let trackId = eachEvent["id"]
         if (!eachEvent.numAttending) {
@@ -312,7 +307,6 @@ router.get('/current', requireAuth, async (req, res) => {
     })
 
     const groupImages = await GroupImage.findAll()
-    // console.log(groupImages)
     groupImages.forEach(image => {
         const theImage = image.toJSON()
         if (!urlObj[theImage["groupId"]]) urlObj[theImage["groupId"]] = theImage.url
@@ -383,7 +377,6 @@ router.get('/', async (req, res) => {
     })
 
     const groupImages = await GroupImage.findAll()
-    // console.log(groupImages)
     groupImages.forEach(image => {
         const theImage = image.toJSON()
         if (!urlObj[theImage["groupId"]]) urlObj[theImage["groupId"]] = theImage.url
@@ -550,7 +543,7 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
     theMembers.forEach(member => {
         membersArr.push(member.toJSON())
     })
-    // console.log(membersArr)
+
     membersArr.forEach(member => {
         if (member.status === 'organizer' || member.status === 'co-host') {
             organizerCohostArr.push(member)
@@ -559,7 +552,7 @@ router.post('/:id/events', validateCreateEvent, requireAuth, async (req, res, ne
     organizerCohostArr.forEach(member => {
         justUserIdsArr.push(member.userId)
     })
-    // console.log(organizerCohostArr)
+
     if (!justUserIdsArr.includes(user.id)) {
         const err = new Error(`Forbidden`);
         err.status = 403;
@@ -696,7 +689,6 @@ router.put('/:id/membership', requireAuth, async (req, res, next) => {
     anArr.forEach(member => {
         member.status = status
     })
-    // console.log(anArr)
 
     res.json(...anArr)
 
