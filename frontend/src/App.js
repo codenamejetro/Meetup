@@ -10,6 +10,7 @@ function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
+    // debugger;
     dispatch(sessionActions.restoreUserThunk()).then(() => setIsLoaded(true));
   }, [dispatch]);
 

@@ -9,6 +9,7 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from "./store/session";
 import { ModalProvider } from './context/Modal';
 import { Modal } from './context/Modal';
+import EventCard from './components/Navigation/EventCard'
 
 
 const store = configureStore();
