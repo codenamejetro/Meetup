@@ -90,7 +90,7 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
 }
 
 //Reducer
-const initialState = { entries: {}}
+const initialState = { session: {}, groups: {}}
 const groupsReducer = (state = initialState, action) => {
     let newState
     switch (action.type) {
