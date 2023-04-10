@@ -1,0 +1,65 @@
+.profile-button {
+    height: 30px;
+    width: 40px;
+}
+
+.splash-large-description {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+    margin-bottom: 5%;
+}
+
+.splash-large-description-text {
+    display: flex;
+    flex-flow: column;
+    width: 20%;
+}
+
+
+.splash-large-description-img {
+padding-left: 1%;
+}
+
+.splash-description {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin-bottom: 7%;
+
+}
+
+
+.splash-three-components {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* align-items: end; */
+    margin-bottom: 3%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.splash-three-components > div {
+    display: flex;
+    flex-flow: column;
+    max-width: 200px;
+    /* max-height: 200px; */
+    justify-content: baseline;
+    /* align-items: center; */
+}
+
+
+.style-all-three {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    /* align-items:flex-start; */
+}
+
+
+.splash-join-button {
+    display: flex;
+    /* width: ; */
+    justify-content: center;
+}

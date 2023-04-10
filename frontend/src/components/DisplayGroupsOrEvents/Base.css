@@ -1,0 +1,11 @@
+.base-selection {
+    flex-flow: row wrap;
+    /* justify-content: center; */
+    /* align-items: center; */
+    border: 1px solid black;
+}
+
+.toggle-between {
+    width: fit-content
+
+}

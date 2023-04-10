@@ -1,0 +1,20 @@
+.nav-bar {
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    height: 10vh;
+    margin-bottom: 6%;
+    border-bottom: 1px solid lightgray;
+}
+
+.title-portion {
+padding-bottom: 1%;
+}
+
+.profile-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 1%;
+
+}

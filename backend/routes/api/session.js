@@ -17,8 +17,8 @@ const validateLogin = [
     handleValidationErrors
   ];
 
-//get current user //work on auth
-router.get('/', requireAuth, (req, res) => {
+//get current user
+router.get('/', (req, res) => {
       const { user } = req;
       if (user) {
         const safeUser = {

@@ -3,12 +3,15 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
+import TopBar from '../HelperComps/TopBar';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <ul>
+    <>
+    <TopBar sessionUser={sessionUser} isLoaded={isLoaded} />
+    {/* <ul>
       <li>
         <NavLink exact to="/">Home</NavLink>
       </li>
@@ -17,7 +20,8 @@ function Navigation({ isLoaded }){
           <ProfileButton user={sessionUser} />
         </li>
       )}
-    </ul>
+    </ul> */}
+    </>
   );
 }
 
