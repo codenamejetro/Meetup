@@ -24,6 +24,11 @@ function LoginFormModal() {
       });
   };
 
+  const demoClick = () => {
+    dispatch(sessionActions.loginUserThunk({credential: 'Demo-lition', password: 'password'}))
+    closeModal()
+  }
+
   return (
     <>
       <h1>Log In</h1>
@@ -46,6 +51,7 @@ function LoginFormModal() {
             required
           />
         </label>
+        <div onClick={() => demoClick()}>Demo User</div>
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
