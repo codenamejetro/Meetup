@@ -1,11 +1,143 @@
 .base-selection {
-    flex-flow: row wrap;
+    display: flex;
+    flex-flow: row;
     /* justify-content: center; */
     /* align-items: center; */
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    width: fit-content;
+    margin-left: 50vh;
+    margin-bottom: 10vh;
 }
 
 .toggle-between {
-    width: fit-content
+    /* display: flex;
+    flex-flow: row; */
+    width: fit-content;
+    color: gray;
+    padding: 0% 3%;
+    font-size: 4vh;
+}
 
+section {
+    display: flex;
+    flex-flow: column;
+    /* justify-content: center; */
+}
+
+section > ul {
+    display: flex;
+    flex-flow: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    width: 100vh;
+    margin-left: 30vh;
+}
+
+.style-all-links {
+    text-decoration: none;
+    color: black;
+
+}
+
+.group-card {
+    display: flex;
+    flex-flow: row;
+    /* justify-content: center; */
+    /* width: 10vh; */
+    border-top: 1px dotted gray;
+    margin-bottom: 4vh;
+    /* text-decoration: none; */
+}
+
+.group-card > img {
+    width: 40%;
+    margin-top: 3vh;
+}
+
+.group-card-info {
+    margin-left: 2vh;
+    max-width: max-content;
+}
+.group-card-info  > h3{
+    font-size: 20px;
+}
+
+.group-card-info  > h4{
+    font-size: 13px;
+    color:tan
+}
+
+.group-card-info  > h5{
+    font-size: 13px;
+}
+
+.group-card-info-bottom {
+    display: flex;
+    flex-flow: row;
+    /* padding: 0px 30px */
+
+}
+
+.group-card-info-bottom > p {
+    font-size: 13px;
+    padding: 0px 10px
+}
+
+
+
+
+/* Only for singular group display */
+
+.group-card-singular {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    /* width: 10vh; */
+    /* border-top: 1px dotted gray; */
+    /* margin-bottom: 0vh; */
+    /* text-decoration: none; */
+    margin-right: 30vh;
+    height: 40vh;
+    /* padding: 5; */
+}
+
+.group-card-singular > img {
+    position: relative;
+    right: 20vh;
+    width: 70vh;
+    /* height: ; */
+    border: 1px solid black;
+    /* margin-left: -10vh; */
+}
+
+.group-card-info-singular {
+    margin-left: 2vh;
+    /* max-width: max-content; */
+    /* width: 800px; */
+}
+.group-card-info-singular  > h3{
+    flex-flow: wrap;
+    font-size: 30px;
+    max-width: 80vh;
+}
+
+.group-card-info-singular  > h4{
+    font-size: 15px;
+    color:tan
+}
+
+.group-card-info-singular  > h5{
+    font-size: 13px;
+}
+
+.group-card-info-bottom-singular {
+    display: flex;
+    flex-flow: row;
+    /* padding: 0px 30px */
+
+}
+
+.group-card-info-bottom-singular > p {
+    font-size: 13px;
+    padding: 0px 10px
 }

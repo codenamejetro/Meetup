@@ -47,6 +47,7 @@ export const fetchGroupsThunk = () => async (dispatch) => {
     if (response.ok) {
         const data = await response.json()
         dispatch(fetchGroups(data))
+
     } else return null
 }
 export const fetchOneGroupThunk = (groupId) => async (dispatch) => {
@@ -90,18 +91,20 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
 }
 
 //Reducer
-const initialState = { session: {}, groups: {}}
+const initialState = { allGroups: {}, singleGroup: {}}
 const groupsReducer = (state = initialState, action) => {
     let newState
     switch (action.type) {
         case GET_GROUPS:
-            newState = { ...state , entries: {} }
-            // console.log ("action.groups.Groups: ", action.groups.Groups)
-            action.groups.Groups.forEach(group => newState.entries[group.id] = group)
+            newState = { ...state , allGroups: {} }
+            // console.log("newState", newState)
+            action.groups.Groups.forEach(group => newState.allGroups[group.id] = group)
             return newState
         case GET_GROUP:
-
-        return ''
+            const theGroup = action.group
+            // console.log("theGroup ", theGroup)
+            newState = { ...state , singleGroup: {...theGroup} }
+            return newState
         case CREATE_GROUP:
 
         return ''

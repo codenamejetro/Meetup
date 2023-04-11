@@ -1,7 +1,11 @@
 import DisplayEvents from "./DisplayEvents"
 import DisplayGroups from "./DisplayGroups"
-import { useState } from "react"
+import React, { createContext, useState, useContext } from "react"
+// import { useContext } from "react"
 import './Base.css'
+
+// const displayEventsContext = React.createContext()
+// const useDisplayEventsContext = useContext()
 
 function Base () {
     const [displayEvents, setDisplayEvents] = useState(true)

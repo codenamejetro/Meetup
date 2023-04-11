@@ -6,6 +6,7 @@ import Base from "./components/DisplayGroupsOrEvents/Base";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SplashPage from "./components/SplashPage";
+import GroupShow from "./components/DisplayGroupsOrEvents/GroupShow";
 //ask about exact path (.) and exact to (navigation/index)
 
 function App() {
@@ -25,6 +26,9 @@ function App() {
           </Route>
           <Route path='/group-event-display'>
             <Base />
+          </Route>
+          <Route exact path="/groups/:groupId">
+            <GroupShow />
           </Route>
           <Route exact path='/'>
             <SplashPage />

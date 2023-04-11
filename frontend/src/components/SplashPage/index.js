@@ -6,13 +6,10 @@ import TopBar from '../HelperComps/TopBar';
 import './SplashPage.css';
 import SplashOptionsDisplay from '../HelperComps/SplashOptionsDisplay';
 import SignupFormModal from '../SignupFormModal';
+import OpenModalButton from "../OpenModalButton";
 
 function SplashPage() {
   const sessionUser = useSelector(state => state.session.user);
-
-const handleSignupClick = () => {
-  return <SignupFormModal />
-}
 
   return (
     <>
@@ -40,22 +37,26 @@ const handleSignupClick = () => {
 
       <div className='splash-three-components'>
         <div>
-          <SplashOptionsDisplay imgUrl={''} text={'See all groups'} smallerText={`Meet groups of people that don't want to be near each other`} redirectUrl={'/group-event-display'}/>
+          <SplashOptionsDisplay imgUrl={''} text={'See all groups'} smallerText={`Meet groups of people that don't want to be near each other`} redirectUrl={'/group-event-display'} />
         </div>
         <div>
-          <SplashOptionsDisplay imgUrl={''} text={'Find an event'} smallerText={`Come to our really awkward events`} redirectUrl={'/group-event-display'}/>
+          <SplashOptionsDisplay imgUrl={''} text={'Find an event'} smallerText={`Come to our really awkward events`} redirectUrl={'/group-event-display'} />
         </div>
         <div>
-          <SplashOptionsDisplay imgUrl={''} text={'Start a new group'} smallerText={`Feel superior as the head of a group comprised of those that don't want to be near each other`} redirectUrl={''} display={sessionUser ? true : false}/>
+          <SplashOptionsDisplay imgUrl={''} text={'Start a new group'} smallerText={`Feel superior as the head of a group comprised of those that don't want to be near each other`} redirectUrl={''} display={sessionUser ? true : false} />
         </div>
       </div>
 
 
-      {!sessionUser && (<div className='splash-join-button' onClick={() => handleSignupClick()}>
-        <button>Join us</button>
-      </div>)}
+        {!sessionUser && (<div className='splash-join-button'> <OpenModalButton
+          buttonText="Join us"
+          modalComponent={<SignupFormModal />}
+        /> </div>)
+        }
+
     </>
   );
 }
 
 export default SplashPage;
+//className='splash-join-button'

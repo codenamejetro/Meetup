@@ -8,6 +8,8 @@ import TopBar from '../HelperComps/TopBar';
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
+
+
   return (
     <>
     <TopBar sessionUser={sessionUser} isLoaded={isLoaded} />

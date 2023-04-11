@@ -21,7 +21,6 @@ function SignupFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    closeModal()
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
@@ -31,7 +30,8 @@ function SignupFormModal() {
           firstName,
           lastName,
           password,
-        })
+        }),
+        closeModal()
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
