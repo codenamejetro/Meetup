@@ -17,6 +17,7 @@ function DisplayGroups() {
     return (
 
         <section>
+            <div className='group-caption'>Groups in SeparateDown</div>
             <ul>
                 {groups.map((group) => (
                     <NavLink className='group-card-redirect style-all-links' to={`/groups/${group.id}`}>
@@ -27,7 +28,7 @@ function DisplayGroups() {
                             <h4>{group.city}</h4>
                             <h5>{group.about}</h5>
                             <div className="group-card-info-bottom" >
-                                <p>{group.numMembers} members  </p>
+                                <p>{group.numMembers} members · </p>
                                 <p>{group.private ? `private` : `public`}</p>
                             </div>
                         </div>

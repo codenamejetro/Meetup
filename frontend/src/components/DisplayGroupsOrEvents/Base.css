@@ -6,7 +6,7 @@
     /* border: 1px solid black; */
     width: fit-content;
     margin-left: 50vh;
-    margin-bottom: 10vh;
+    margin-bottom: 5vh;
 }
 
 .toggle-between {
@@ -22,6 +22,11 @@ section {
     display: flex;
     flex-flow: column;
     /* justify-content: center; */
+}
+
+.group-caption {
+    margin-left: 51vh;
+    margin-bottom: 2vh;
 }
 
 section > ul {
@@ -80,7 +85,7 @@ section > ul {
 
 .group-card-info-bottom > p {
     font-size: 13px;
-    padding: 0px 10px
+    padding: 0px 2px
 }
 
 
@@ -90,8 +95,8 @@ section > ul {
 
 .group-card-singular {
     display: flex;
-    flex-flow: row;
-    justify-content: center;
+    /* flex-flow: row; */
+    /* justify-content: center; */
     /* width: 10vh; */
     /* border-top: 1px dotted gray; */
     /* margin-bottom: 0vh; */
@@ -103,7 +108,7 @@ section > ul {
 
 .group-card-singular > img {
     position: relative;
-    right: 20vh;
+    left: 20vh;
     width: 70vh;
     /* height: ; */
     border: 1px solid black;
@@ -111,26 +116,31 @@ section > ul {
 }
 
 .group-card-info-singular {
-    margin-left: 2vh;
+    position: relative;
+    left: 30vh;
+    /* margin-left: vh; */
     /* max-width: max-content; */
     /* width: 800px; */
+    display: flex;
+    flex-flow: column;
+    align-items: start;
 }
-.group-card-info-singular  > h3{
-    flex-flow: wrap;
-    font-size: 30px;
-    max-width: 80vh;
+.group-card-info-singular > span {
+    font-size: 10vh;
+    overflow-wrap: break-word;
+    font-size: 4vh;
+    max-width: 90vh;
+    border: 1px solid black;
 }
 
-.group-card-info-singular  > h4{
-    font-size: 15px;
-    color:tan
-}
-
-.group-card-info-singular  > h5{
+.group-card-info-singular > p {
     font-size: 13px;
+        /* padding: 0px 10px */
 }
+
 
 .group-card-info-bottom-singular {
+
     display: flex;
     flex-flow: row;
     /* padding: 0px 30px */
@@ -139,5 +149,13 @@ section > ul {
 
 .group-card-info-bottom-singular > p {
     font-size: 13px;
-    padding: 0px 10px
+    padding: 0px 2px
+}
+
+
+/* Under singular group card */
+
+
+h2 {
+    font-size: 170%;
 }

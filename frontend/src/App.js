@@ -7,6 +7,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SplashPage from "./components/SplashPage";
 import GroupShow from "./components/DisplayGroupsOrEvents/GroupShow";
+import CreateGroupForm from "./components/CreateGroupForm";
 //ask about exact path (.) and exact to (navigation/index)
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
           </Route>
           <Route exact path="/groups/:groupId">
             <GroupShow />
+          </Route>
+          <Route exact path='/start-a-group'>
+            <CreateGroupForm />
           </Route>
           <Route exact path='/'>
             <SplashPage />
