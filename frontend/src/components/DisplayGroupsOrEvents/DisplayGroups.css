@@ -60,6 +60,7 @@ section > ul {
 
 .group-card > img {
     width: 40vh;
+    height: 23vh;
     margin-top: 3vh;
     border: 1px solid black ;
 }
@@ -211,6 +212,7 @@ h2 {
 
 .event-card > img {
     width: 40vh;
+    height: 23vh;
     margin-top: 3vh;
     border: 1px solid black ;
 }

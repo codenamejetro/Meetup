@@ -16,7 +16,7 @@ module.exports = {
       {
         organizerId: 1,
         name: 'group1',
-        about: 'fun in the Bay Area',
+        about: 'Having lots of fun in the Bay Area so come join us',
         type: 'In person',
         private: true,
         city: 'San Francisco',
@@ -25,7 +25,7 @@ module.exports = {
       {
         organizerId: 2,
         name: 'group2',
-        about: 'going crazy in Florida',
+        about: 'Going crazy in Florida. Drop by if you want to see',
         type: 'Online',
         private: false,
         city: 'Tallahassee',
@@ -34,7 +34,7 @@ module.exports = {
       {
         organizerId: 3,
         name: 'group3',
-        about: 'Michigan peeps',
+        about: 'Michigan peeps. I do not know anything about Michigan I apologize',
         type: 'Online',
         private: false,
         city: 'Lansing',
