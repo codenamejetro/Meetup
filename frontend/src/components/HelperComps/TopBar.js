@@ -14,8 +14,12 @@ function TopBar({ sessionUser, isLoaded }) {
                     </NavLink>
                 </div>
 
+
+
                 {isLoaded && (
+
                     <div className="profile-buttons">
+                        {sessionUser && (<NavLink className='profile-buttons-start-group' to ='/start-a-group'>Start a new group</NavLink>)}
                         <ProfileButton user={sessionUser} />
                     </div>
                 )}

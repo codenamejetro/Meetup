@@ -1,0 +1,17 @@
+.profile-button-logged-in {
+    position: absolute;
+    top: 9vh;
+    left: 230vh;
+    /* border: 1px solid black; */
+    /* color: white; */
+    width: fit-content;
+    background-color: lightgray ;
+}
+
+
+/* .hidden {
+
+    color: white;
+    width: fit-content;
+
+} */

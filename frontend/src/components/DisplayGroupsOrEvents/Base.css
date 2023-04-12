@@ -1,17 +1,18 @@
 .base-selection {
     display: flex;
     flex-flow: row;
-    /* justify-content: center; */
+    justify-content: center;
     /* align-items: center; */
     /* border: 1px solid black; */
     width: fit-content;
-    margin-left: 50vh;
+    margin-left: 35vh;
     margin-bottom: 5vh;
 }
 
 .toggle-between {
     /* display: flex;
-    flex-flow: row; */
+    flex-flow: row;
+    justify-content: center; */
     width: fit-content;
     color: gray;
     padding: 0% 3%;
@@ -21,11 +22,13 @@
 section {
     display: flex;
     flex-flow: column;
+    align-items: center;
     /* justify-content: center; */
+    margin-right: 45vh;
 }
 
 .group-caption {
-    margin-left: 51vh;
+    margin-right: 39vh;
     margin-bottom: 2vh;
 }
 
@@ -44,19 +47,24 @@ section > ul {
 
 }
 
+.group-card-redirect {
+    /* max-width: 60vh; */
+}
+
 .group-card {
     display: flex;
     flex-flow: row;
     /* justify-content: center; */
-    /* width: 10vh; */
+    /* width: 130vh; */
     border-top: 1px dotted gray;
     margin-bottom: 4vh;
     /* text-decoration: none; */
 }
 
 .group-card > img {
-    width: 40%;
+    width: 40vh;
     margin-top: 3vh;
+    border: 1px solid black ;
 }
 
 .group-card-info {
@@ -74,6 +82,8 @@ section > ul {
 
 .group-card-info  > h5{
     font-size: 13px;
+    word-wrap: break-word;
+    max-width: 50vh;
 }
 
 .group-card-info-bottom {
@@ -150,6 +160,10 @@ section > ul {
 .group-card-info-bottom-singular > p {
     font-size: 13px;
     padding: 0px 2px
+}
+
+.group-card-singular-join {
+
 }
 
 

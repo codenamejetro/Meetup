@@ -1,3 +1,4 @@
+import { csrfFetch } from "./csrf";
 
 const GET_GROUPS = 'groups/fetchGroupsThunk'
 const GET_GROUP = 'groups/fetchOneGroupThunk'
@@ -58,13 +59,14 @@ export const fetchOneGroupThunk = (groupId) => async (dispatch) => {
     } else return null
 }
 export const createGroupThunk = (group) => async (dispatch) => {
-    const response = await fetch(`/api/groups`, {
+    const response = await csrfFetch(`/api/groups`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(group)
     })
+    console.log('right after fetch')
     if (response.ok) {
         const data = await response.json()
         dispatch(createGroup(data))
@@ -94,6 +96,7 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
 const initialState = { allGroups: {}, singleGroup: {}}
 const groupsReducer = (state = initialState, action) => {
     let newState
+    const theGroup = action.group
     switch (action.type) {
         case GET_GROUPS:
             newState = { ...state , allGroups: {} }
@@ -101,12 +104,18 @@ const groupsReducer = (state = initialState, action) => {
             action.groups.Groups.forEach(group => newState.allGroups[group.id] = group)
             return newState
         case GET_GROUP:
-            const theGroup = action.group
+            // const theGroup = action.group
             // console.log("theGroup ", theGroup)
             newState = { ...state , singleGroup: {...theGroup} }
             return newState
         case CREATE_GROUP:
-
+            // const theGroup = action.group
+            // console.log("this is action.group ", action.group)
+            newState = { ...state, singleGroup: {...theGroup}}
+            // newState = { ...state , allGroups: {} }
+            // const newArr = [action.group]
+            // newArr.forEach(group => newState.allGroups[group.id] = group)
+            return newState
         return ''
         case UPDATE_GROUP:
 
@@ -120,3 +129,4 @@ const groupsReducer = (state = initialState, action) => {
 }
 
 export default groupsReducer
+//newState = { ...state , singleGroup: {...theGroup} }

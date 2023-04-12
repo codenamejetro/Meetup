@@ -22,7 +22,6 @@ function SplashPage() {
 
     //add modal or alert
   }
-
   }
 
 return (

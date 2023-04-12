@@ -16,5 +16,12 @@ padding-bottom: 1%;
     justify-content: space-around;
     align-items: center;
     padding-bottom: 1%;
+    padding: 0% 1%;
+    margin-right: 7vh;
+}
 
+.profile-buttons-start-group {
+    margin-right: 2vh;
+    text-decoration: none;
+    color:cadetblue
 }
