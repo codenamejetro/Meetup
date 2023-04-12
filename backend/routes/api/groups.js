@@ -687,8 +687,12 @@ router.put('/:id/membership', requireAuth, async (req, res, next) => {
         anArr.push(member.toJSON())
     })
     anArr.forEach(member => {
-        member.status = status
+        member.set({
+            status: status
+        })
+        member.save()
     })
+
 
     res.json(...anArr)
 
@@ -697,6 +701,7 @@ router.put('/:id/membership', requireAuth, async (req, res, next) => {
 //Edit a group
 router.put('/:id', validateCreateGroup, requireAuth, async (req, res, next) => {
     const theGroup = await Group.findByPk(req.params.id)
+
     if (!theGroup) {
         const err = new Error(`Group couldn't be found`);
         err.status = 404;
@@ -707,17 +712,45 @@ router.put('/:id', validateCreateGroup, requireAuth, async (req, res, next) => {
         err.status = 403;
         return next(err);
     } else {
+
         const { name, about, type, private, city, state } = req.body
-        if (name) theGroup.name = name
-        if (about) theGroup.about = about
-        if (type) theGroup.type = type
-        if (private) theGroup.private = private
-        if (city) theGroup.city = city
-        if (state) theGroup.state = state
+        theGroup.set({
+            name: name,
+            about: about,
+            type: type,
+            private: private,
+            city: city,
+            state: state
+        })
+        await theGroup.save()
 
     }
-
     res.json(theGroup)
+
+    // const theGroup = await Group.findByPk(req.params.id)
+    // console.log(theGroup.toJSON())
+    // console.log(theGroup.dataValues)
+    // if (!theGroup) {
+    //     const err = new Error(`Group couldn't be found`);
+    //     err.status = 404;
+    //     return next(err);
+    // }
+    // if (req.user.id !== theGroup.organizerId) {
+    //     const err = new Error(`Forbidden`);
+    //     err.status = 403;
+    //     return next(err);
+    // } else {
+    //     const { name, about, type, private, city, state } = req.body
+    //     if (name) theGroup.dataValues.name = name
+    //     if (about) theGroup.dataValues.about = about
+    //     if (type) theGroup.dataValues.type = type
+    //     if (private) theGroup.dataValues.private = private
+    //     if (city) theGroup.dataValues.city = city
+    //     if (state) theGroup.dataValues.state = state
+
+    // }
+
+    // res.json(theGroup)
 })
 
 //Delete membership to group based on Id

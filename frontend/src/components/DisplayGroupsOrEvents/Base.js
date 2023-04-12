@@ -2,7 +2,7 @@ import DisplayEvents from "./DisplayEvents"
 import DisplayGroups from "./DisplayGroups"
 import React, { createContext, useState, useContext } from "react"
 // import { useContext } from "react"
-import './Base.css'
+// import './Base.css'
 
 // const displayEventsContext = React.createContext()
 // const useDisplayEventsContext = useContext()

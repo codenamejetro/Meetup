@@ -35,10 +35,10 @@ const updateGroup = (group) => {
     }
 }
 
-const deleteGroup = (group) => {
+const deleteGroup = (groupId) => {
     return {
         type: DELETE_GROUP,
-        group: group
+        groupId: groupId
     }
 }
 
@@ -72,14 +72,19 @@ export const createGroupThunk = (group) => async (dispatch) => {
         dispatch(createGroup(data))
     } else return null
 }
-export const updateGroupThunk = (groupId) => async (dispatch) => {
-    const response = await fetch(`/api/groups/${groupId}`, {
+export const updateGroupThunk = (group, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(response)
+        body: JSON.stringify(group)
     })
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(updateGroup(data))
+
+    } else return null
 
 }
 export const deleteGroupThunk = (groupId) => async (dispatch) => {
@@ -90,39 +95,47 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
         },
         body: JSON.stringify(groupId)
     })
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(deleteGroup(groupId))
+    } else return null
 }
 
 //Reducer
-const initialState = { allGroups: {}, singleGroup: {}}
+const initialState = { allGroups: {}, singleGroup: {} }
 const groupsReducer = (state = initialState, action) => {
     let newState
     const theGroup = action.group
     switch (action.type) {
         case GET_GROUPS:
-            newState = { ...state , allGroups: {} }
+            newState = { ...state, allGroups: {} }
             // console.log("newState", newState)
             action.groups.Groups.forEach(group => newState.allGroups[group.id] = group)
             return newState
         case GET_GROUP:
             // const theGroup = action.group
             // console.log("theGroup ", theGroup)
-            newState = { ...state , singleGroup: {...theGroup} }
+            newState = { ...state, singleGroup: { ...theGroup } }
             return newState
         case CREATE_GROUP:
             // const theGroup = action.group
-            // console.log("this is action.group ", action.group)
-            newState = { ...state, singleGroup: {...theGroup}}
+            newState = { ...state, singleGroup: { ...theGroup } }
             // newState = { ...state , allGroups: {} }
             // const newArr = [action.group]
             // newArr.forEach(group => newState.allGroups[group.id] = group)
             return newState
-        return ''
         case UPDATE_GROUP:
-
-        return ''
+            console.log("this is action.group ", action.group)
+            newState = { ...state, singleGroup: { ...theGroup } }
+            const newArr = [action.group]
+            // console.log(newArr)
+            newArr.forEach(group => newState.allGroups[group.id] = group)
+            console.log(newState)
+            return newState
         case DELETE_GROUP:
-
-        return ''
+            newState = { ...state, allGroups: {} }
+            delete newState[action.allGroups.groupId]
+            return newState
         default:
             return state
     }

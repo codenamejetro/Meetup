@@ -4,13 +4,16 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import { Redirect } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const [url, setUrl] = useState('')
   const ulRef = useRef();
 
-  const openMenu = () => {
+  const openMenu = (e) => {
+    // e.nativeEvent.stopImmediatePropagation()
     if (showMenu) return;
     setShowMenu(true);
   };
@@ -19,6 +22,7 @@ function ProfileButton({ user }) {
     if (!showMenu) return;
 
     const closeMenu = (e) => {
+      // e.nativeEvent.stopImmediatePropagation()
       if (!ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
@@ -31,9 +35,17 @@ function ProfileButton({ user }) {
 
   const closeMenu = () => setShowMenu(false);
 
+  // const sendToGroups = (e) => {
+  //   e.nativeEvent.stopImmediatePropagation()
+  //   setUrl('/group-event-display')
+  //   closeMenu()
+  // }
+
   const logout = (e) => {
     e.preventDefault();
+    e.nativeEvent.stopImmediatePropagation()
     dispatch(sessionActions.logoutUserThunk());
+    // e.stopPropagation()
     closeMenu();
   };
 
@@ -41,7 +53,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-    {user && (<button className='profile-button' onClick={openMenu}>
+    {user && (<button className='profile-button' onClick={(e) => openMenu(e)}>
         <i className="fas fa-user-circle" />
       </button>)}
       {/* <button className='profile-button' onClick={openMenu}>
@@ -50,11 +62,15 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user && showMenu && (
           <div className='profile-button-logged-in' >
+            <li>Hello {user.firstName}</li>
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
+            {/* <li>
+              <button onClick={(e) => sendToGroups(e)}>View Groups {url && <Redirect to={url} />} </button>
+              </li> */}
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button onClick={(e) => logout(e)}>Log Out</button>
             </li>
           </div>
         )}

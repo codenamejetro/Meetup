@@ -8,6 +8,9 @@ import Navigation from "./components/Navigation";
 import SplashPage from "./components/SplashPage";
 import GroupShow from "./components/DisplayGroupsOrEvents/GroupShow";
 import CreateGroupForm from "./components/CreateGroupForm";
+import UpdateGroupForm from "./components/UpdateGroupForm";
+import DisplayGroups from "./components/DisplayGroupsOrEvents/DisplayGroups";
+import DisplayEvents from "./components/DisplayGroupsOrEvents/DisplayEvents";
 //ask about exact path (.) and exact to (navigation/index)
 
 function App() {
@@ -25,11 +28,17 @@ function App() {
           <Route path="/signup">
             <SignupFormModal />
           </Route>
-          <Route path='/group-event-display'>
-            <Base />
+          <Route exact path='/groups-display'>
+            <DisplayGroups />
+          </Route>
+          <Route exact path='/events-display'>
+            <DisplayEvents />
           </Route>
           <Route exact path="/groups/:groupId">
             <GroupShow />
+          </Route>
+          <Route exact path='/groups/:groupId/edit'>
+            <UpdateGroupForm />
           </Route>
           <Route exact path='/start-a-group'>
             <CreateGroupForm />

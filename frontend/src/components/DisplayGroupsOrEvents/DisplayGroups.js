@@ -1,10 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { NavLink, Redirect } from "react-router-dom";
 import { fetchGroupsThunk } from '../../store/groups'
+import './DisplayGroups.css'
 
 function DisplayGroups() {
     const dispatch = useDispatch()
+    const [url, setUrl] = useState('')
     const groupsInitial = useSelector(state => state.groups.allGroups);
     const groups = Object.values(groupsInitial)
 
@@ -12,10 +14,20 @@ function DisplayGroups() {
         dispatch(fetchGroupsThunk())
     }, [dispatch])
 
+    const handleClick = () => {
+        setUrl('/events-display')
+    }
+
+
     if (!groupsInitial) return null
 
-    return (
 
+    return (
+<>
+        <div className='group-base-selection'>
+            <div onClick={handleClick} className="event-button toggle-between">Events {url && <Redirect to={url}/>}</div>
+            <div className="at-group-button toggle-between">Groups</div>
+        </div>
         <section>
             <div className='group-caption'>Groups in SeparateDown</div>
             <ul>
@@ -38,6 +50,7 @@ function DisplayGroups() {
                 ))}
             </ul>
         </section>
+</>
 
     )
 }

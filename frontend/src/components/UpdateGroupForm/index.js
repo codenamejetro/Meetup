@@ -1,25 +1,47 @@
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-import { createGroupThunk } from '../../store/groups'
-import { Redirect, useHistory } from "react-router-dom"
-import './CreateGroupForm.css'
+import { Redirect, useHistory, useParams } from "react-router-dom"
+import { fetchOneGroupThunk, updateGroupThunk, fetchGroupsThunk } from "../../store/groups"
 
 
-function CreateGroupForm() {
-    const [location, setLocation] = useState('')
-    const [groupName, setGroupName] = useState('')
-    const [groupAbout, setGroupAbout] = useState('')
-    const [online, setOnline] = useState('')
+function UpdateGroupForm({currId}) {
+    const { groupId } = useParams()
+    const dispatch = useDispatch()
+
+    const sessionUser = useSelector(state => state.session.user);
+    const allGroups = useSelector(state => state.groups.allGroups);
+    const singleGroupImage = useSelector(state => state.groups.singleGroup.GroupImages)
+// console.log(allGroups)
+    const group = allGroups[groupId]
+    // console.log("groupImgObj", singleGroupImage[0].url)
+    // console.log("the about", theGroup.about.length)
+
+
+    const [location, setLocation] = useState(group.city + ', ' + group.state)
+    const [groupName, setGroupName] = useState(group.name)
+    const [groupAbout, setGroupAbout] = useState(group.about)
+    const [online, setOnline] = useState(group.type)
     const [url, setUrl] = useState('');
-    const [isPrivate, setIsPrivate] = useState('')
-    const [img, setImg] = useState('')
+    const [isPrivate, setIsPrivate] = useState(group.private)
+    const [img, setImg] = useState(singleGroupImage.length > 0 ? singleGroupImage[0].url : '')
     const [err, setErr] = useState({})
     const [displayErr, setDisplayErr] = useState(false)
 
+    // const [location, setLocation] = useState(group.city + ', ' + group.state)
+    // const [groupName, setGroupName] = useState(group.name)
+    // const [groupAbout, setGroupAbout] = useState(group.about)
+    // const [online, setOnline] = useState(group.type)
+    // const [url, setUrl] = useState('');
+    // const [isPrivate, setIsPrivate] = useState(group.private)
+    // const [img, setImg] = useState('')
+    // const [err, setErr] = useState({})
+    // const [displayErr, setDisplayErr] = useState(false)
 
-    const sessionUser = useSelector(state => state.session.user);
-    const theGroup = useSelector(state => state.groups.singleGroup);
-    const dispatch = useDispatch()
+    useEffect(() => {
+        // console.log('the currId ', groupId)
+        dispatch(fetchGroupsThunk())
+        dispatch(fetchOneGroupThunk(groupId))
+    }, [dispatch])
 
     useEffect(() => {
         const errors = {}
@@ -28,7 +50,7 @@ function CreateGroupForm() {
         if (groupAbout.length < 31) errors.groupAbout = "Description must be at least 30 characters long"
         if (online !== 'Online' && online !== 'In person') errors.online = "Group Type is required"
         if (isPrivate !== true && isPrivate !== false) errors.isPrivate = "Visibility Type is required"
-        if (!img.endsWith('.png') && !img.endsWith('.jpg') && !img.endsWith('.jpeg')) errors.img = "Image URL needs to end in jpg or png"
+        // if (!img.endsWith('.png') && !img.endsWith('.jpg') && !img.endsWith('.jpeg')) errors.img = "Image URL needs to end in jpg or png"
         setErr(errors)
     }, [location, groupName, groupAbout, online, isPrivate, img])
 
@@ -39,20 +61,25 @@ function CreateGroupForm() {
         }
         else {
             const locationSeparated = location.split(', ')
-            const group = { organizerId: sessionUser.id, name: groupName, about: groupAbout, type: online, private: isPrivate, city: locationSeparated[0], state: locationSeparated[1], previewImage: url }
-            dispatch(createGroupThunk(group))
-            setUrl(`/groups/${theGroup.id}`)
+            const group = { name: groupName, about: groupAbout, type: online, private: isPrivate, city: locationSeparated[0], state: locationSeparated[1] }
+
+            dispatch(updateGroupThunk(group, groupId))
+
+            setUrl(`/groups/${groupId}`)
 
         }
     }
 
+    if (!group) return null
+    if (!allGroups) return null
+    if (!singleGroupImage) return null
 
     return (
         <>
             {url && <Redirect to={url} />}
             <div>
-                <p>BECOME AN ORGANIZER</p>
-                <p>We'll walk you through a few steps to build your local community</p>
+                <p>UPDATE YOUR GROUP'S INFORMATION</p>
+                <p>We'll walk you through a few steps to update your group's information</p>
             </div>
             <form onSubmit={onSubmit}>
 
@@ -123,29 +150,29 @@ function CreateGroupForm() {
                         <option value={false} key={'public'}>
                             Public
                         </option>
-                        <option value={true} key={true}>
+                        <option value={true} key={'private'}>
                             Private
                         </option>
                     </select>
                     {displayErr === true && err.isPrivate && (<p className="errors">· {err.isPrivate}</p>)}
 
 
-                    <p>Please add an image url for your group below:</p>
+                    {/* <p>Please add an image url for your group below:</p>
                     <input
                         type="text"
                         name="img"
                         value={img}
                         onChange={(e) => setImg(e.target.value)}
                         placeholder={'Image Url'}
-                    />
+                    /> */}
                 </label>
                 {displayErr === true && err.img && (<p className="errors">· {err.img}</p>)}
 
-                <button type='submit' >Create Group</button>
+                <button type='submit' >Update Group</button>
 
             </form>
         </>
     )
 }
 
-export default CreateGroupForm
+export default UpdateGroupForm

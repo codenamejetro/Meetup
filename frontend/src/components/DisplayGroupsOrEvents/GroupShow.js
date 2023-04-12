@@ -1,35 +1,50 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, Redirect, useParams } from "react-router-dom";
 import { fetchGroupsThunk, fetchOneGroupThunk } from "../../store/groups";
-
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 
 function GroupShow() {
     const dispatch = useDispatch()
+    const [url, setUrl] = useState('')
+    const [openModal, setOpenModal] = useState(false)
     const { groupId } = useParams()
     const sessionUser = useSelector(state => state.session.user);
-    // console.log("session user id ",  sessionUser)
     const allGroups = useSelector(state => state.groups.allGroups);
     const group = allGroups[groupId]
-    // console.log(allGroups)
-    // console.log(group)
+
     const singleGroup = useSelector(state => state.groups.singleGroup)
     const singleGroupImage = useSelector(state => state.groups.singleGroup.GroupImages)
-    console.log(singleGroup)
 
     useEffect(() => {
         dispatch(fetchGroupsThunk())
         dispatch(fetchOneGroupThunk(groupId))
     }, [dispatch])
 
+    const handleClick = (e) => {
+        // e.preventDefault()
+        setUrl(`/groups/${groupId}/edit`)
+    }
+
+    const handleJoin = (e) => {
+        e.preventDefault()
+        return alert('Feature coming soon')
+    }
+
+
     if (!group) return null
     // if (!anObj) return null
     if (!singleGroup) return null
+    if (!singleGroupImage) return null
+
+
 
     return (
         <>
+        <div className='bread-crumb'> {`<`} <NavLink to='/group-event-display'>Groups</NavLink></div>
+        {openModal && (<div><OpenModalMenuItem /></div>)}
             <div className='group-card-singular'>
-                {singleGroupImage.length > 0 ? (<img src={singleGroup.GroupImages['url']} />): <img/>}
+                {singleGroupImage.length > 0 ? (<img src={singleGroup.GroupImages['url']} />) : <img/>}
                 <div className='group-card-info-singular'>
                     <span>{group.name}</span>
                     <p>{group.city}</p>
@@ -42,11 +57,11 @@ function GroupShow() {
                     {sessionUser && sessionUser.id === singleGroup.Organizer.id && (
                         <div>
                             <button>Create event</button>
-                            <button>Update</button>
-                            <button>Delete</button>
+                            <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)}/>} </button>
+                            <button onClick={(e) => !setOpenModal()}>Delete</button>
                         </div>
                         )}
-                    {sessionUser && sessionUser.id !== singleGroup.Organizer.id && <button className="group-card-singular-join">Join this group</button>}
+                    {sessionUser && sessionUser.id !== singleGroup.Organizer.id && <button onClick={handleJoin} className="group-card-singular-join">Join this group</button>}
 
                 </div>
 

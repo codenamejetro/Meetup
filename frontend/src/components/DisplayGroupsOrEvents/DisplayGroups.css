@@ -1,35 +1,8 @@
-.base-selection {
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    /* align-items: center; */
-    /* border: 1px solid black; */
-    width: fit-content;
-    margin-left: 35vh;
-    margin-bottom: 5vh;
-}
-
-.toggle-between {
-    /* display: flex;
-    flex-flow: row;
-    justify-content: center; */
-    width: fit-content;
-    color: gray;
-    padding: 0% 3%;
-    font-size: 4vh;
-}
-
 section {
     display: flex;
     flex-flow: column;
     align-items: center;
-    /* justify-content: center; */
     margin-right: 45vh;
-}
-
-.group-caption {
-    margin-right: 39vh;
-    margin-bottom: 2vh;
 }
 
 section > ul {
@@ -41,15 +14,39 @@ section > ul {
     margin-left: 30vh;
 }
 
+.toggle-between {
+    width: fit-content;
+    color: gray;
+    padding: 0% 3%;
+    font-size: 4vh;
+}
+
 .style-all-links {
     text-decoration: none;
     color: black;
 
 }
 
-.group-card-redirect {
-    /* max-width: 60vh; */
+.group-base-selection {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    /* align-items: center; */
+    /* border: 1px solid black; */
+    width: fit-content;
+    margin-left: 35vh;
+    margin-bottom: 5vh;
 }
+
+.at-group-button {
+    text-decoration-line: underline;
+}
+
+.group-caption {
+    margin-right: 39vh;
+    margin-bottom: 2vh;
+}
+
 
 .group-card {
     display: flex;
@@ -102,6 +99,12 @@ section > ul {
 
 
 /* Only for singular group display */
+
+.bread-crumb {
+    position: relative;
+    left: 20vh;
+    bottom: 1vh;
+}
 
 .group-card-singular {
     display: flex;
@@ -172,4 +175,74 @@ section > ul {
 
 h2 {
     font-size: 170%;
+}
+
+/* Events-Display */
+
+.event-base-selection {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    /* align-items: center; */
+    /* border: 1px solid black; */
+    width: fit-content;
+    margin-left: 35vh;
+    margin-bottom: 5vh;
+}
+
+.at-event-button {
+    text-decoration-line: underline;
+}
+
+.event-caption {
+    margin-right: 39vh;
+    margin-bottom: 2vh;
+}
+
+.event-card {
+    display: flex;
+    flex-flow: row;
+    /* justify-content: center; */
+    /* width: 130vh; */
+    border-top: 1px dotted gray;
+    margin-bottom: 4vh;
+    /* text-decoration: none; */
+}
+
+.event-card > img {
+    width: 40vh;
+    margin-top: 3vh;
+    border: 1px solid black ;
+}
+
+.event-card-info {
+    margin-left: 2vh;
+    max-width: max-content;
+}
+
+.event-card-info  > h3{
+    font-size: 20px;
+}
+
+.event-card-info  > h4{
+    font-size: 13px;
+    color:tan
+}
+
+.event-card-info  > h5{
+    font-size: 13px;
+    word-wrap: break-word;
+    max-width: 50vh;
+}
+
+.event-card-info-bottom {
+    display: flex;
+    flex-flow: row;
+    /* padding: 0px 30px */
+
+}
+
+.event-card-info-bottom > p {
+    font-size: 13px;
+    padding: 0px 2px
 }

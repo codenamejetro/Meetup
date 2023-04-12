@@ -50,10 +50,10 @@ return (
 
     <div className='splash-three-components'>
       <div>
-        <SplashOptionsDisplay imgUrl={''} text={'See all groups'} smallerText={`Meet groups of people that don't want to be near each other`} redirectUrl={'/group-event-display'} />
+        <SplashOptionsDisplay imgUrl={''} text={'See all groups'} smallerText={`Meet groups of people that don't want to be near each other`} redirectUrl={'/groups-display'} />
       </div>
       <div>
-        <SplashOptionsDisplay imgUrl={''} text={'Find an event'} smallerText={`Come to our really awkward events`} redirectUrl={'/group-event-display'} />
+        <SplashOptionsDisplay imgUrl={''} text={'Find an event'} smallerText={`Come to our really awkward events`} redirectUrl={'/events-display'} />
       </div>
       <div>
         {/* <SplashOptionsDisplay imgUrl={''} text={'Start a new group'} smallerText={`Feel superior as the head of a group comprised of those that don't want to be near each other`} redirectUrl={'start-a-group'} display={sessionUser ? true : false} /> */}

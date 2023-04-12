@@ -368,7 +368,7 @@ router.post('/:id/images', requireAuth, async (req, res, next) => {
 
 })
 
-//Change the status of an attendance for an event by id
+//Change the status of an attendance for an event by id //needs set save
 router.put('/:id/attendance', requireAuth, async (req, res, next) => {
     const { userId, status } = req.body
     const theEvent = await Event.findByPk(req.params.id)
@@ -468,7 +468,7 @@ router.put('/:id', validateCreateEvent, requireAuth, async (req, res, next) => {
     }
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
-    if (venueId) theEvent.venueid = venueId
+    if (venueId) theEvent.venueId = venueId
     if (name) theEvent.name = name
     if (type) theEvent.type = type
     if (capacity) theEvent.capacity = capacity
@@ -476,6 +476,19 @@ router.put('/:id', validateCreateEvent, requireAuth, async (req, res, next) => {
     if (description) theEvent.description = description
     if (startDate) theEvent.startDate = startDate
     if (endDate) theEvent.endDate = endDate
+
+    theEvent.set({
+        venueId: venueId,
+        name: name,
+        type: type,
+        capacity: capacity,
+        price: price,
+        description: description,
+        startDate: startDate,
+        endDate: endDate
+    })
+
+    theEvent.save()
 
     const validEvent = {
         id: theEvent.id,

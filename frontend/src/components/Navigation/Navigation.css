@@ -1,11 +1,15 @@
 .profile-button-logged-in {
     position: absolute;
-    top: 9vh;
-    left: 230vh;
+    top: 7.8vh;
+    right: 1vh;
     /* border: 1px solid black; */
     /* color: white; */
     width: fit-content;
     background-color: lightgray ;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    /* justify-content: center; */
 }
 
 
