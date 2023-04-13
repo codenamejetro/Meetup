@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-import { createGroupThunk } from '../../store/groups'
+import { createGroupThunk, resetGroupsThunk } from '../../store/groups'
 import { Redirect, useHistory } from "react-router-dom"
 import './CreateGroupForm.css'
 
 
 function CreateGroupForm() {
+    let history = useHistory()
+
     const [location, setLocation] = useState('')
     const [groupName, setGroupName] = useState('')
     const [groupAbout, setGroupAbout] = useState('')
@@ -21,6 +23,10 @@ function CreateGroupForm() {
     const theGroup = useSelector(state => state.groups.singleGroup);
     const dispatch = useDispatch()
 
+    // useEffect(() => {
+    //     dispatch(resetGroupsThunk())
+    // }, [])
+
     useEffect(() => {
         const errors = {}
         if (!location) errors.location = "Location is required"
@@ -32,16 +38,18 @@ function CreateGroupForm() {
         setErr(errors)
     }, [location, groupName, groupAbout, online, isPrivate, img])
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
         if (Object.keys(err).length > 0) {
             setDisplayErr(true)
+            return
         }
         else {
             const locationSeparated = location.split(', ')
             const group = { organizerId: sessionUser.id, name: groupName, about: groupAbout, type: online, private: isPrivate, city: locationSeparated[0], state: locationSeparated[1], previewImage: url }
-            dispatch(createGroupThunk(group))
-            setUrl(`/groups/${theGroup.id}`)
+            const newGroup = await dispatch(createGroupThunk(group))
+
+            setUrl(`/groups/${newGroup.id}`)
 
         }
     }
@@ -51,7 +59,7 @@ function CreateGroupForm() {
         <>
             {url && <Redirect to={url} />}
             <div>
-                <p>BECOME AN ORGANIZER</p>
+                <p>START A NEW GROUP AND BECOME AN ORGANIZER</p>
                 <p>We'll walk you through a few steps to build your local community</p>
             </div>
             <form onSubmit={onSubmit}>

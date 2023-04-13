@@ -30,7 +30,7 @@ function DisplayGroups() {
         </div>
         <section>
             <div className='group-caption'>Groups in SeparateDown</div>
-            <ul>
+            <div>
                 {groups.map((group) => (
                     <NavLink className='group-card-redirect style-all-links' to={`/groups/${group.id}`}>
                     <div className='group-card'>
@@ -48,7 +48,7 @@ function DisplayGroups() {
 
                     </NavLink>
                 ))}
-            </ul>
+            </div>
         </section>
 </>
 

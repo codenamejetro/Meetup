@@ -7,6 +7,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SplashPage from "./components/SplashPage";
 import GroupShow from "./components/DisplayGroupsOrEvents/GroupShow";
+import EventShow from "./components/DisplayGroupsOrEvents/EventShow";
 import CreateGroupForm from "./components/CreateGroupForm";
 import UpdateGroupForm from "./components/UpdateGroupForm";
 import DisplayGroups from "./components/DisplayGroupsOrEvents/DisplayGroups";
@@ -28,11 +29,19 @@ function App() {
           <Route path="/signup">
             <SignupFormModal />
           </Route>
-          <Route exact path='/groups-display'>
-            <DisplayGroups />
-          </Route>
           <Route exact path='/events-display'>
             <DisplayEvents />
+          </Route>
+          <Route exact path='/events/:eventId'>
+            <EventShow />
+          </Route>
+          {/* <Route exact path='events/:eventId/edit'>
+
+          </Route> */}
+
+
+          <Route exact path='/groups-display'>
+            <DisplayGroups />
           </Route>
           <Route exact path="/groups/:groupId">
             <GroupShow />
@@ -40,6 +49,7 @@ function App() {
           <Route exact path='/groups/:groupId/edit'>
             <UpdateGroupForm />
           </Route>
+
           <Route exact path='/start-a-group'>
             <CreateGroupForm />
           </Route>

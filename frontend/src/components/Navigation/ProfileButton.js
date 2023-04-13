@@ -4,7 +4,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import { Redirect } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -66,9 +66,8 @@ function ProfileButton({ user }) {
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
-            {/* <li>
-              <button onClick={(e) => sendToGroups(e)}>View Groups {url && <Redirect to={url} />} </button>
-              </li> */}
+            <NavLink to='/groups-display'>View groups</NavLink>
+            <NavLink to='/events-display'>View events</NavLink>
             <li>
               <button onClick={(e) => logout(e)}>Log Out</button>
             </li>

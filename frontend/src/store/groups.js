@@ -5,6 +5,7 @@ const GET_GROUP = 'groups/fetchOneGroupThunk'
 const CREATE_GROUP = 'groups/createGroupThunk'
 const UPDATE_GROUP = 'groups/updateGroupThunk'
 const DELETE_GROUP = 'groups/deleteGroupThunk'
+const RESET_GROUP = 'groups/resetGroupsThunk'
 
 //Action creators
 const fetchGroups = (groups) => {
@@ -42,6 +43,12 @@ const deleteGroup = (groupId) => {
     }
 }
 
+const resetGroups = () => {
+    return {
+        type: RESET_GROUP
+    }
+}
+
 //Thunk action creators
 export const fetchGroupsThunk = () => async (dispatch) => {
     const response = await fetch('/api/groups')
@@ -66,10 +73,11 @@ export const createGroupThunk = (group) => async (dispatch) => {
         },
         body: JSON.stringify(group)
     })
-    console.log('right after fetch')
     if (response.ok) {
         const data = await response.json()
         dispatch(createGroup(data))
+        return data
+
     } else return null
 }
 export const updateGroupThunk = (group, groupId) => async (dispatch) => {
@@ -88,17 +96,22 @@ export const updateGroupThunk = (group, groupId) => async (dispatch) => {
 
 }
 export const deleteGroupThunk = (groupId) => async (dispatch) => {
-    const response = await fetch(`/api/groups/${groupId}`, {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(groupId)
+        }
+        // body: JSON.stringify(groupId)
     })
     if (response.ok) {
+        // console.log('inside delete thunk')
         const data = await response.json()
         dispatch(deleteGroup(groupId))
     } else return null
+}
+
+export const resetGroupsThunk = () => async dispatch => {
+    dispatch(resetGroups())
 }
 
 //Reducer
@@ -133,8 +146,12 @@ const groupsReducer = (state = initialState, action) => {
             console.log(newState)
             return newState
         case DELETE_GROUP:
+            // console.log("this is action", action)
             newState = { ...state, allGroups: {} }
-            delete newState[action.allGroups.groupId]
+            delete newState[action.allGroups[action.groupId]]
+            return newState
+        case RESET_GROUP:
+            newState = {...initialState}
             return newState
         default:
             return state

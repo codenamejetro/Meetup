@@ -11,11 +11,7 @@ function UpdateGroupForm({currId}) {
     const sessionUser = useSelector(state => state.session.user);
     const allGroups = useSelector(state => state.groups.allGroups);
     const singleGroupImage = useSelector(state => state.groups.singleGroup.GroupImages)
-// console.log(allGroups)
     const group = allGroups[groupId]
-    // console.log("groupImgObj", singleGroupImage[0].url)
-    // console.log("the about", theGroup.about.length)
-
 
     const [location, setLocation] = useState(group.city + ', ' + group.state)
     const [groupName, setGroupName] = useState(group.name)
@@ -27,15 +23,7 @@ function UpdateGroupForm({currId}) {
     const [err, setErr] = useState({})
     const [displayErr, setDisplayErr] = useState(false)
 
-    // const [location, setLocation] = useState(group.city + ', ' + group.state)
-    // const [groupName, setGroupName] = useState(group.name)
-    // const [groupAbout, setGroupAbout] = useState(group.about)
-    // const [online, setOnline] = useState(group.type)
-    // const [url, setUrl] = useState('');
-    // const [isPrivate, setIsPrivate] = useState(group.private)
-    // const [img, setImg] = useState('')
-    // const [err, setErr] = useState({})
-    // const [displayErr, setDisplayErr] = useState(false)
+    // if (!sessionUser )
 
     useEffect(() => {
         // console.log('the currId ', groupId)

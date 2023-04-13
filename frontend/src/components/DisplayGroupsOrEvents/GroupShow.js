@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Redirect, useParams } from "react-router-dom";
 import { fetchGroupsThunk, fetchOneGroupThunk } from "../../store/groups";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import ConfirmDeleteGroup from "../HelperComps/ConfirmDeleteGroup";
 
 function GroupShow() {
     const dispatch = useDispatch()
@@ -41,10 +42,10 @@ function GroupShow() {
 
     return (
         <>
-        <div className='bread-crumb'> {`<`} <NavLink to='/group-event-display'>Groups</NavLink></div>
-        {openModal && (<div><OpenModalMenuItem /></div>)}
+            <div className='bread-crumb'> {`<`} <NavLink to='/groups-display'>Groups</NavLink></div>
+            {/* {openModal && (<div><OpenModalMenuItem /></div>)} */}
             <div className='group-card-singular'>
-                {singleGroupImage.length > 0 ? (<img src={singleGroup.GroupImages['url']} />) : <img/>}
+                {singleGroupImage.length > 0 ? (<img src={singleGroup.GroupImages[0].url} />) : <img />}
                 <div className='group-card-info-singular'>
                     <span>{group.name}</span>
                     <p>{group.city}</p>
@@ -57,10 +58,13 @@ function GroupShow() {
                     {sessionUser && sessionUser.id === singleGroup.Organizer.id && (
                         <div>
                             <button>Create event</button>
-                            <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)}/>} </button>
-                            <button onClick={(e) => !setOpenModal()}>Delete</button>
+                            <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)} />} </button>
+                            <OpenModalMenuItem
+                                itemText="Delete"
+                                // onItemClick={closeMenu}
+                                modalComponent={<ConfirmDeleteGroup />} />
                         </div>
-                        )}
+                    )}
                     {sessionUser && sessionUser.id !== singleGroup.Organizer.id && <button onClick={handleJoin} className="group-card-singular-join">Join this group</button>}
 
                 </div>
