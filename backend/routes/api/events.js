@@ -223,6 +223,11 @@ router.get('/', async (req, res) => {
     }
 
     const theEvents = await Event.findAll({
+        include: [{
+            model: Group, attributes: ['id', 'name', 'city', 'state']
+         }, {
+            model: Venue, attributes: ['id', 'city', 'state']
+         }],
         where,
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         ...pagination
@@ -240,21 +245,21 @@ router.get('/', async (req, res) => {
         if (!imgObj[imgJSON["eventId"]]) imgObj[imgJSON["eventId"]] = imgJSON.url
     })
 
-    const groups = await Group.findAll({
-        attributes: ["id", "name", "city", "state"]
-    })
-    groups.forEach(eachGroup => {
-        const groupJSON = eachGroup.toJSON()
-        if (!groupObj[groupJSON["id"]]) groupObj[groupJSON["id"]] = groupJSON
-    })
+    // const groups = await Group.findAll({
+    //     attributes: ["id", "name", "city", "state"]
+    // })
+    // groups.forEach(eachGroup => {
+    //     const groupJSON = eachGroup.toJSON()
+    //     if (!groupObj[groupJSON["id"]]) groupObj[groupJSON["id"]] = groupJSON
+    // })
 
-    const venues = await Venue.findAll({
-        attributes: ["id", "city", "state"]
-    })
-    venues.forEach(eachVenue => {
-        const venueJSON = eachVenue.toJSON()
-        if (!venueObj[venueJSON["id"]]) venueObj[venueJSON["id"]] = venueJSON
-    })
+    // const venues = await Venue.findAll({
+    //     attributes: ["id", "city", "state"]
+    // })
+    // venues.forEach(eachVenue => {
+    //     const venueJSON = eachVenue.toJSON()
+    //     if (!venueObj[venueJSON["id"]]) venueObj[venueJSON["id"]] = venueJSON
+    // })
 
     theEvents.forEach(event => {
         finalArr.push(event.toJSON())
@@ -595,3 +600,105 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 
 })
 module.exports = router
+
+// let { page, size, name, type, startDate } = req.query;
+
+//     const where = {}
+
+//     page = parseInt(page);
+//     size = parseInt(size);
+
+//     if (Number.isNaN(page)) page = 0;
+//     if (Number.isNaN(size)) size = 20;
+
+//     const pagination = {};
+//     if (page >= 1 && size >= 1) {
+//         pagination.limit = size;
+//         pagination.offset = size * (page - 1);
+//     }
+//     if (page >= 11) {
+//         pagination.offset = size * 10;
+//     }
+//     if (size >= 21) {
+//         pagination.limit = 20;
+//     }
+
+//     req.pagination = pagination
+
+//     const finalArr = []
+//     const countAttObj = {}
+//     const imgObj = {}
+//     const groupObj = {}
+//     const venueObj = {}
+
+//     if (name && name !== '') {
+//         where.name = name
+//     }
+
+//     if (type && type !== '') {
+//         where.type = type
+//     }
+
+//     if (startDate && startDate !== '') {
+//         where.startDate = startDate
+//     }
+
+//     const theEvents = await Event.findAll({
+//         where,
+//         attributes: { exclude: ['createdAt', 'updatedAt'] },
+//         ...pagination
+//     })
+
+//     const attendances = await Attendance.findAll()
+//     attendances.forEach(attendee => {
+//         if (countAttObj[attendee["eventId"]]) countAttObj[attendee["eventId"]] += 1
+//         else countAttObj[attendee["eventId"]] = 1
+//     })
+
+//     const eventImages = await EventImage.findAll()
+//     eventImages.forEach(eachImg => {
+//         const imgJSON = eachImg.toJSON()
+//         if (!imgObj[imgJSON["eventId"]]) imgObj[imgJSON["eventId"]] = imgJSON.url
+//     })
+
+//     const groups = await Group.findAll({
+//         attributes: ["id", "name", "city", "state"]
+//     })
+//     groups.forEach(eachGroup => {
+//         const groupJSON = eachGroup.toJSON()
+//         if (!groupObj[groupJSON["id"]]) groupObj[groupJSON["id"]] = groupJSON
+//     })
+
+//     const venues = await Venue.findAll({
+//         attributes: ["id", "city", "state"]
+//     })
+//     venues.forEach(eachVenue => {
+//         const venueJSON = eachVenue.toJSON()
+//         if (!venueObj[venueJSON["id"]]) venueObj[venueJSON["id"]] = venueJSON
+//     })
+
+//     theEvents.forEach(event => {
+//         finalArr.push(event.toJSON())
+//     })
+
+//     finalArr.forEach(eachEvent => {
+//         let trackId = eachEvent["id"]
+//         if (!eachEvent.numAttending) {
+//             eachEvent.numAttending = countAttObj[trackId]
+//         }
+//         if (!eachEvent.previewImage) {
+//             eachEvent.previewImage = imgObj[trackId]
+//         }
+//         if (!eachEvent.Group) {
+//             eachEvent.Group = groupObj[trackId]
+//         }
+//         if (!eachEvent.Venue) {
+//             eachEvent.Venue = venueObj[trackId]
+//         }
+//     });
+
+
+
+//     res.json({ Events: finalArr
+//         // , page, size
+//     })

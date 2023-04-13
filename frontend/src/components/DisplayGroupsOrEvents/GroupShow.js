@@ -57,7 +57,7 @@ function GroupShow() {
                     <p>Organized by {singleGroup.Organizer.firstName} {singleGroup.Organizer.lastName}</p>
                     {sessionUser && sessionUser.id === singleGroup.Organizer.id && (
                         <div>
-                            <button>Create event</button>
+                            <NavLink to={`/groups/${groupId}/start-an-event`}>Create event</NavLink>
                             <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)} />} </button>
                             <OpenModalMenuItem
                                 itemText="Delete"

@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { fetchEventsThunk, fetchOneEventThunk } from "../../store/events"
 import { useParams, NavLink } from "react-router-dom"
-import { fetchGroupsThunk, fetchOneGroupThunk } from "../../store/groups"
 import EventShowGroup from "./EventShowGroup"
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem"
+import ConfirmDeleteEvent from "../HelperComps/ConfirmDeleteEvent"
 
 
 function EventShow() {
@@ -15,21 +16,23 @@ function EventShow() {
 
     const sessionUser = useSelector(state => state.session.user);
     const allEvents = useSelector(state => state.events.allEvents);
-    // const group = useSelector(state => state.events.singleEvent.Group)
+
     const event = allEvents[eventId]
 
-    // console.log("event ", group)
-            // dispatch(fetchOneGroupThunk(groupId))
 
     useEffect(() => {
         dispatch(fetchEventsThunk())
-        // dispatch(fetchOneEventThunk(eventId))
-        // dispatch(fetchGroupsThunk())
+        dispatch(fetchOneEventThunk(eventId))
     }, [dispatch])
 
-    // if(!allEvents) return null
-    if(!event) return null
-    // if(!group) return null
+
+    // const handleClick = (e) => {
+    //     setUrl(`/events/${eventId}/edit`)
+    // }
+
+
+
+    if (!event) return null
 
     return (
         <>
@@ -37,23 +40,34 @@ function EventShow() {
 
             <div className='event-title-singular'>
                 <p>{event.name} <br /> </p>
-              Hosted by {`firstName`} {`lastName`}
+                Hosted by {`firstName`} {`lastName`}
             </div>
 
             <div className='event-three-cards-singular'>
                 <img src={event.previewImage}></img>
                 <div className="event-two-cards-singular">
                     <NavLink className='event-two-cards-nav' to='/groups'>
-                        <EventShowGroup event={event}/>
+                        <EventShowGroup event={event} />
                     </NavLink>
                     <div className='event-card-container-singular'>
                         <div className='event-card-start-end-time-singular'>
-                            Start time {`${event.startDate.split("T")[0]} · ${event.startDate.split("T")[1].slice(0, event.startDate.split("T")[1].length - 2)}` } <br /> <br />
+                            Start time {`${event.startDate.split("T")[0]} · ${event.startDate.split("T")[1].slice(0, event.startDate.split("T")[1].length - 2)}`} <br /> <br />
                             End time {`${event.endDate.split("T")[0]} · ${event.endDate.split("T")[1].slice(0, event.endDate.split("T")[1].length - 2)}`}
                         </div>
 
                         <div className='event-card-price-singular'>{event.price === 0 ? `FREE` : `Price ---> $` + event.price}</div>
-                        <div className='event-card-in-person-label-singular'>{event.type === 'In person' ? `In Person` : 'Online'}</div>
+
+                        <div>
+                            <div className='event-card-in-person-label-singular'>{event.type === 'In person' ? `In Person` : 'Online'}</div>
+                            <div>
+                            {/* <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)} />} </button> */}
+                                <OpenModalMenuItem
+                                itemText="Delete"
+                                // onItemClick={closeMenu}
+                                modalComponent={<ConfirmDeleteEvent />}/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

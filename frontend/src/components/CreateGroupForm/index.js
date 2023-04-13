@@ -23,10 +23,6 @@ function CreateGroupForm() {
     const theGroup = useSelector(state => state.groups.singleGroup);
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch(resetGroupsThunk())
-    // }, [])
-
     useEffect(() => {
         const errors = {}
         if (!location) errors.location = "Location is required"
@@ -34,7 +30,7 @@ function CreateGroupForm() {
         if (groupAbout.length < 31) errors.groupAbout = "Description must be at least 30 characters long"
         if (online !== 'Online' && online !== 'In person') errors.online = "Group Type is required"
         if (isPrivate !== true && isPrivate !== false) errors.isPrivate = "Visibility Type is required"
-        if (!img.endsWith('.png') && !img.endsWith('.jpg') && !img.endsWith('.jpeg')) errors.img = "Image URL needs to end in jpg or png"
+        if (!img.endsWith('.png') && !img.endsWith('.jpg') && !img.endsWith('.jpeg')) errors.img = "Image URL must end in .png .jpg or .jpeg"
         setErr(errors)
     }, [location, groupName, groupAbout, online, isPrivate, img])
 

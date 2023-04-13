@@ -56,16 +56,37 @@ export const fetchOneEventThunk = (eventId) => async (dispatch) => {
         dispatch(fetchEvent(data))
     } else return null
 }
-export const createEventThunk = (group) => async (dispatch) => {
-
+export const createEventThunk = (event, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(event)
+    })
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(createEvent(data))
+        return data
+    }
 }
 // export const updateEventThunk = (group, groupId) => async (dispatch) => {
 
 // }
 export const deleteEventThunk = (eventId) => async (dispatch) => {
-
+    const response = await csrfFetch(`/api/events/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        // body: JSON.stringify(groupId)
+    })
+    if (response.ok) {
+        // console.log('inside delete thunk')
+        const data = await response.json()
+        dispatch(deleteEvent(eventId))
+    } else return null
 }
-
 
 
 const initialState = { allEvents: {}, singleEvent: {} }
@@ -82,11 +103,15 @@ const eventsReducer = (state = initialState, action) => {
             newState = {...state, singleEvent: { ...theEvent}}
             return newState
         case CREATE_EVENT:
-            return ''
+            // console.log("this is theEvent", theEvent)
+            newState = { ...state, singleEvent: {...theEvent} }
+            return newState
         // case UPDATE_EVENT:
         //     return ''
         case DELETE_EVENT:
-            return ''
+            newState = { ...state, allEvents: {} }
+            delete newState[action.allEvents[action.eventId]]
+            return newState
         default:
             return state
     }
