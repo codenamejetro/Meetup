@@ -1,28 +1,24 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { NavLink, Redirect } from "react-router-dom";
-import { fetchEventsThunk } from '../../store/events'
-import './DisplayEvents.css'
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchEventsThunk } from "../../store/events";
+import { NavLink } from "react-router-dom";
 
-function DisplayEvents() {
+
+
+function GroupShowEvents({groupId}) {
     const dispatch = useDispatch()
-    const [url, setUrl] = useState('')
+    console.log(groupId)
+
     const eventsInitial = useSelector(state => state.events.allEvents);
     const events = Object.values(eventsInitial)
-    // console.log("events ", events)
 
-    useEffect(() => {
-        dispatch(fetchEventsThunk())
-    }, [dispatch])
-
-    const handleClick = () => {
-        setUrl('/groups-display')
-    }
-
+    console.log("events: ", events)
+    const eventsForGroup = events.filter(event => event.groupId === +groupId)
     let eventsToCome = []
     let prevEvents = []
+    console.log("eventsForGroup: ", eventsForGroup)
 
-    events.forEach(event => {
+    eventsForGroup.forEach(event => {
         if (new Date(event.startDate) > new Date()) {
             eventsToCome.push(event)
         } else prevEvents.push(event)
@@ -57,19 +53,19 @@ function DisplayEvents() {
     });
 
 
-    if (!eventsInitial) return null
 
+    useEffect(() => {
+        dispatch(fetchEventsThunk())
+    }, [dispatch])
+
+
+    if (!eventsInitial) return null
 
     return (
         <>
-            <div className='event-base-selection'>
-                <div className="at-event-button toggle-between">Events</div>
-                <div onClick={handleClick} className="toggle-between">Groups {url && <Redirect to={url} />}</div>
-            </div>
-            <section>
-                <div className='event-caption'>Events in SeparateDown</div>
-                <ul>
-                    {eventsToCome.map((event) => (
+            <h2>Upcoming Events {`(${eventsToCome.length})`} </h2>
+            <div>
+            {eventsToCome.map((event) => (
                         // <NavLink className='style-all-links' to='/groups'>
                         <NavLink className='style-all-links' to={`/events/${event.id}`}>
                             <div className="event-entire-card">
@@ -91,9 +87,9 @@ function DisplayEvents() {
 
                         </NavLink>
                     ))}
-                </ul>
-
-                <div className="event-prev-events"> Previous Events
+            </div>
+            <h2>Past Events {`(${prevEvents.length})`}</h2>
+            <div className="event-prev-events">
                     {prevEvents.map((event) => (
                         <div className="event-entire-card">
                             <div className='event-card'>
@@ -109,10 +105,9 @@ function DisplayEvents() {
                         </div>
                     ))}
                 </div>
-            </section>
         </>
 
     )
 }
 
-export default DisplayEvents
+export default GroupShowEvents

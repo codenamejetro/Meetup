@@ -292,7 +292,7 @@ h2 {
     display: flex;
     flex-flow: column;
     position: relative;
-    height: 60vh;
+    height: auto;
     left: 25vh;
 }
 .event-two-cards-nav {

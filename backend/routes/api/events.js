@@ -576,16 +576,22 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
     const { user } = req
 
     const theMembers = await Membership.findAll({
-        where: { groupId: req.params.id }
+        where: { groupId: theEvent.groupId }
     })
+    // console.log(theMembers,   req.params.id)
+
     theMembers.forEach(member => {
         membersArr.push(member.toJSON())
     })
+
+    // console.log("membersArr: ", membersArr)
     membersArr.forEach(member => {
         if (member.status === 'organizer' || member.status === 'co-host') {
             organizerCohostArr.push(member)
         }
     })
+    // console.log("organizerCohostArr", organizerCohostArr)
+    // console.log("JustUserIdsArr", justUserIdsArr)
     organizerCohostArr.forEach(member => {
         justUserIdsArr.push(member.userId)
     })

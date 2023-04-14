@@ -25,13 +25,6 @@ function EventShow() {
         dispatch(fetchOneEventThunk(eventId))
     }, [dispatch])
 
-
-    // const handleClick = (e) => {
-    //     setUrl(`/events/${eventId}/edit`)
-    // }
-
-
-
     if (!event) return null
 
     return (
@@ -63,7 +56,6 @@ function EventShow() {
                             {/* <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)} />} </button> */}
                                 <OpenModalMenuItem
                                 itemText="Delete"
-                                // onItemClick={closeMenu}
                                 modalComponent={<ConfirmDeleteEvent />}/>
                             </div>
                         </div>

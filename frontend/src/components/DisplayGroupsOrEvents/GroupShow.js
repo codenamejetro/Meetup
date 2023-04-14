@@ -4,6 +4,7 @@ import { NavLink, Redirect, useParams } from "react-router-dom";
 import { fetchGroupsThunk, fetchOneGroupThunk } from "../../store/groups";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import ConfirmDeleteGroup from "../HelperComps/ConfirmDeleteGroup";
+import GroupShowEvents from "./GroupShowEvents";
 
 function GroupShow() {
     const dispatch = useDispatch()
@@ -76,11 +77,11 @@ function GroupShow() {
                 <p>{singleGroup.Organizer.firstName}</p>
                 <h2>What we're about</h2>
                 <p></p>
-                <h2>Upcoming Events 'replace with number of events' </h2>
-                <div></div>
-                <h2>Past Events</h2>
-                <div></div>
+                <GroupShowEvents groupId={groupId}/>
             </div>
+
+
+
         </>
     )
 }

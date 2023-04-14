@@ -3,7 +3,7 @@ import { csrfFetch } from "./csrf";
 const GET_EVENTS = 'events/fetchEventThunk'
 const GET_EVENT = 'events/fetchOneEventThunk'
 const CREATE_EVENT = 'events/createEventThunk'
-const UPDATE_EVENT = 'events/updateEventThunk'
+// const UPDATE_EVENT = 'events/updateEventThunk'
 const DELETE_EVENT = 'events/deleteEventThunk'
 
 const fetchEvents = (events) => {
@@ -27,12 +27,12 @@ const createEvent = (event) => {
     }
 }
 
-const updateEvent = (event) => {
-    return {
-        type: UPDATE_EVENT,
-        event
-    }
-}
+// const updateEvent = (event) => {
+//     return {
+//         type: UPDATE_EVENT,
+//         event
+//     }
+// }
 
 const deleteEvent = (eventId) => {
     return {

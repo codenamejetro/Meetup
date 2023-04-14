@@ -23,7 +23,7 @@ function UpdateGroupForm({currId}) {
     const [err, setErr] = useState({})
     const [displayErr, setDisplayErr] = useState(false)
 
-    // if (!sessionUser )
+    // if (!sessionUser || sessionUser.id !== )
 
     useEffect(() => {
         // console.log('the currId ', groupId)
