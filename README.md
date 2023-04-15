@@ -2,7 +2,8 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+<img width="827" alt="Screenshot 2023-03-27 at 8 30 51 AM" src="https://user-images.githubusercontent.com/113797107/232249523-d9e7e708-db01-4409-bacd-8cac9bdf9c9a.png">
+
 
 ## API Documentation
 
