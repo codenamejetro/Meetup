@@ -64,8 +64,8 @@ function GroupShowEvents({groupId}) {
     return (
         <>
             <h2>Upcoming Events {`(${eventsToCome.length})`} </h2>
-            <div>
-            {eventsToCome.map((event) => (
+
+            {eventsToCome.length > 0 ?(<div>{eventsToCome.map((event) => (
                         // <NavLink className='style-all-links' to='/groups'>
                         <NavLink className='style-all-links' to={`/events/${event.id}`}>
                             <div className="event-entire-card">
@@ -87,7 +87,8 @@ function GroupShowEvents({groupId}) {
 
                         </NavLink>
                     ))}
-            </div>
+            </div>)
+             : (<div>No Upcoming Events</div>) }
             <h2>Past Events {`(${prevEvents.length})`}</h2>
             <div className="event-prev-events">
                     {prevEvents.map((event) => (

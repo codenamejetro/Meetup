@@ -9,8 +9,8 @@ function TopBar({ sessionUser, isLoaded }) {
 
             <div className='nav-bar'>
                 <div className='title-portion'>
-                    <NavLink className='style-all-links' exact to="/">
-                        SeparateDown?
+                    <NavLink className='style-all-links top-bar-web-name' exact to="/">
+                        SeparateDown
                     </NavLink>
                 </div>
 

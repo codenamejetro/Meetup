@@ -14,8 +14,8 @@ const validateCreateGroup = [
         .withMessage('Name must be 60 characters or less'),
     check('about')
         .exists({ checkFalsy: true })
-        .notEmpty().isLength({ min: 50 })
-        .withMessage('About must be 50 characters or more'),
+        .notEmpty().isLength({ min: 30 })
+        .withMessage('About must be 30 characters or more'),
     check('type').exists({ checkFalsy: true })
         .notEmpty()
         .isIn(['Online', 'In person'])

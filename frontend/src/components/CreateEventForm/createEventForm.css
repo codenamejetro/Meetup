@@ -1,0 +1,58 @@
+.create-event-form-wrapper {
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    /* width: 800px; */
+}
+
+.create-event-form-separating-line {
+    border-bottom: 1px solid black;
+    width: 420px;
+    padding-bottom: 3vh;
+}
+
+.create-event-form-wrapper > form {
+    width: 500px
+}
+
+.create-event-form-label-name {
+    margin-top: -20px;
+    /* margin-bottom: 20px; */
+}
+
+.create-event-form-label-online {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* .create-event-form-label-input::placeholder {
+    position: relative;
+    left: 10px
+} */
+
+.create-event-form-label-div-price {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-event-form-label-startdate {
+    padding-top: 20px;
+}
+
+.create-event-form-label-enddate {
+    padding-top: 20px;
+}
+
+.create-event-form-label-img {
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.create-event-form-label-description {
+    padding-top: 20px;
+    padding-bottom: 5px;
+}

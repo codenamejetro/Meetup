@@ -1,21 +1,69 @@
+.profile-button {
+    display: flex;
+    align-items: center;
+
+}
+
+.profile-button > i {
+    margin-right: 10px;
+}
+
+.profile-button-logged-out {
+
+}
+
 .profile-button-logged-in {
     position: absolute;
-    top: 7.8vh;
-    right: 1vh;
+    top: 72px;
+    right: 48px;
     /* border: 1px solid black; */
     /* color: white; */
-    width: fit-content;
-    background-color: lightgray ;
+    max-width: 40vh;
+    background-color: lightcyan;
+    border: 1px solid black;
     display: flex;
     flex-flow: column;
     align-items: center;
     /* justify-content: center; */
+    padding: 16px 16px;
+
+}
+
+.profile-button-logged-out {
+    position: absolute;
+    top: 72px;
+    right: 48px;
+    /* border: 1px solid black; */
+    /* color: white; */
+    max-width: 40vh;
+    background-color: lightcyan;
+    border: 1px solid black;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    /* justify-content: center; */
+    padding: 16px 16px;
 }
 
 
-/* .hidden {
+.for-styling {
+    margin: .8vh;
+}
 
-    color: white;
-    width: fit-content;
+.for-styling-separation {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    border-top: 1px solid black;
+    width: 100%;
+}
 
-} */
+.profile-button-logout {
+    margin-top: 8px;
+    /* border-top: 1px solid black; */
+    /* font-weight: bold; */
+}
+
+.profile-button-logged-out-each {
+    font-weight: bold;
+}

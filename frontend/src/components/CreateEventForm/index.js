@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { createEventThunk } from "../../store/events"
 import { useParams, Redirect } from "react-router-dom"
+import './createEventForm.css'
 
 function CreateEventForm() {
     const dispatch = useDispatch()
@@ -31,7 +32,7 @@ function CreateEventForm() {
         if (!eventStart) errors.eventStart = 'Event start is required'
         if (!eventEnd) errors.eventEnd = 'Event end is required'
         if (!img.endsWith('.png') && !img.endsWith('.jpg') && !img.endsWith('.jpeg')) errors.img = "Image URL must end in .png .jpg or .jpeg"
-        if (description.length < 31) errors.description ='Description must be at least 30 characters long'
+        if (description.length < 31) errors.description = 'Description must be at least 30 characters long'
         setErr(errors)
     }, [name, online, isPrivate, price, eventStart, eventEnd, img, description])
 
@@ -54,115 +55,132 @@ function CreateEventForm() {
 
     return (
         <>
-        {url && <Redirect to={url} />}
-            <div>
-                Create an event for group name
-            </div>
-            <form onSubmit={onSubmit}>
-                <label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder={'Event Name'}
-                    />
-                    {displayErr === true && err.name && (<p className="errors">· {err.name}</p>)}
-                </label>
+            {url && <Redirect to={url} />}
+            <div className="create-event-form-wrapper">
+                <form onSubmit={onSubmit}>
+                <div className="create-event-top">
+                    <h2>Create an event for group name</h2>
+                </div>
 
-                <label>
-                    Is this an in person or online event?
-                    <select
-                        value={online}
-                        onChange={(e) => setOnline(e.target.value)}
-                    >
-                        <option value="" disabled>(select-one)</option>
+                    <div className="create-event-form-separating-line">
+                        <label className="create-event-form-label-name">
+                            <div>What is the name of your event?</div>
+                            <input
+                                type="text"
+                                name="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder={'Event Name'}
+                                style={{width:'300px'}}
+                            />
+                        </label>
+                        {displayErr === true && err.name && (<p className="errors">· {err.name}</p>)}
 
-                        <option value='In person' key={'in-person'}>
-                            In person
-                        </option>
-                        <option value='Online' key={'online'}>
-                            Online
-                        </option>
-                    </select>
-                    {displayErr === true && err.online && (<p className="errors">· {err.online}</p>)}
-                </label>
+                    </div>
 
-                <label>
-                    <p>Is this group private or public?</p>
-                    <select
-                        value={isPrivate}
-                        onChange={(e) => setIsPrivate(!isPrivate)}
-                    >
-                        <option value='' disabled>(select-one)</option>
+                    <div className="create-event-form-separating-line">
+                        <label >
+                            <div className="create-event-form-label-online">Is this an in person or online event?</div>
+                            <select
+                                value={online}
+                                onChange={(e) => setOnline(e.target.value)}
+                                style={{width:'95px'}}
+                            >
+                                <option value="" disabled>(select-one)</option>
 
-                        <option value={false} key={'public'}>
-                            Public
-                        </option>
-                        <option value={true} key={true}>
-                            Private
-                        </option>
-                    </select>
-                    {displayErr === true && err.isPrivate && (<p className="errors">· {err.isPrivate}</p>)}
-                </label>
+                                <option value='In person' key={'in-person'}>
+                                    In person
+                                </option>
+                                <option value='Online' key={'online'}>
+                                    Online
+                                </option>
+                            </select>
+                        </label>
+                        {displayErr === true && err.online && (<p className="errors">· {err.online}</p>)}
 
-                <label>
-                    What is the price for your event?
-                    <input
-                        type="text"
-                        // inputmode="numeric"
-                        name="price"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        placeholder={'0'}
-                    />
-                    {displayErr === true && err.price && (<p className="errors">· {err.price}</p>)}
-                </label>
+                        <label>
+                            <p>Is this group private or public?</p>
+                            <select
+                                value={isPrivate}
+                                onChange={(e) => setIsPrivate(!isPrivate)}
+                            >
+                                <option value='' disabled>(select-one)</option>
 
-                <label>
-                    When does your event start?
-                    <input
-                        type="datetime-local"
-                        name="eventStart"
-                        value={eventStart}
-                        onChange={(e) => setEventStart(e.target.value)}
-                        placeholder={'MM/DD/YYYY HH:mm AM'}
-                    />
-                    {displayErr === true && err.eventStart && (<p className="errors">· {err.eventStart}</p>)}
-                </label>
-                <label>
-                    When does your event end?
-                    <input
-                        type="datetime-local"
-                        name="eventEnd"
-                        value={eventEnd}
-                        onChange={(e) => setEventEnd(e.target.value)}
-                        placeholder={'MM/DD/YYYY HH:mm PM'}
-                    />
-                    {displayErr === true && err.eventEnd && (<p className="errors">· {err.eventEnd}</p>)}
-                </label>
+                                <option value={false} key={'public'}>
+                                    Public
+                                </option>
+                                <option value={true} key={true}>
+                                    Private
+                                </option>
+                            </select>
+                        </label>
+                        {displayErr === true && err.isPrivate && (<p className="errors">· {err.isPrivate}</p>)}
 
-                <label>
-                    Please add an image url for your group below:
-                    <input
-                        type="text"
-                        name="img"
-                        value={img}
-                        onChange={(e) => setImg(e.target.value)}
-                        placeholder={'Image URL'}
-                    />
-                    {displayErr === true && err.img && (<p className="errors">· {err.img}</p>)}
-                </label>
+                        <label>
+                            <div className="create-event-form-label-div-price">What is the price for your event?</div>
+                            <input
+                                type="text"
+                                // inputmode="numeric"
+                                name="price"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                placeholder={'0'}
+                                // className='create-event-form-label-input'
+                            />
+                        </label>
+                        {displayErr === true && err.price && (<p className="errors">· {err.price}</p>)}
+                    </div>
 
+                    <div className="create-event-form-separating-line">
+                        <label>
+                            <div className="create-event-form-label-startdate">When does your event start?</div>
+                            <input
+                                type="datetime-local"
+                                name="eventStart"
+                                value={eventStart}
+                                onChange={(e) => setEventStart(e.target.value)}
+                                placeholder={'MM/DD/YYYY HH:mm AM'}
+                            />
+                        </label>
 
-                <label htmlFor='description'>
-                Please describe your event:
-                    <textarea id='description' name='description' rows={'5'} cols={'50'} value={description} onChange={(e) => setDescription(e.target.value)} placeholder={'Please include at least 30 characters'}></textarea>
+                        {displayErr === true && err.eventStart && (<p className="errors">· {err.eventStart}</p>)}
+                        <label>
+                            <div className="create-event-form-label-enddate">When does your event end?</div>
+                            <input
+                                type="datetime-local"
+                                name="eventEnd"
+                                value={eventEnd}
+                                onChange={(e) => setEventEnd(e.target.value)}
+                                placeholder={'MM/DD/YYYY HH:mm PM'}
+                            />
+                        </label>
+                        {displayErr === true && err.eventEnd && (<p className="errors">· {err.eventEnd}</p>)}
+                    </div>
+
+                    <div className="create-event-form-separating-line">
+                        {/* <label> */}
+                            <div className="create-event-form-label-img">Please add an image url for your group below:</div>
+                            <input
+                                type="text"
+                                name="img"
+                                value={img}
+                                onChange={(e) => setImg(e.target.value)}
+                                placeholder={'Image URL'}
+                            />
+                        {/* </label> */}
+                        {displayErr === true && err.img && (<p className="errors">· {err.img}</p>)}
+                    </div>
+
+                        <div className="create-event-form-label-description">Please describe your event:</div>
+                    <label htmlFor='description'>
+                        <textarea id='description' name='description' rows={'5'} cols={'50'} value={description} onChange={(e) => setDescription(e.target.value)} placeholder={'Please include at least 30 characters'}></textarea>
+                    </label>
                     {displayErr === true && err.description && (<p className="errors">· {err.description}</p>)}
-                </label>
 
-                <button type='submit'>Create Event </button>
-            </form>
+                    <button style={{marginTop: '20px', marginBottom: '5px', padding: '10px', color: 'white', backgroundColor: 'red', boxShadow: '3px 3px 2px black'}} type='submit'>Create Event </button>
+                </form>
+
+            </div>
         </>
     )
 }

@@ -1,3 +1,5 @@
+
+// import './TopBar.css'
 import { NavLink } from "react-router-dom"
 
 function SplashOptionsDisplay({ imgUrl, text, smallerText, redirectUrl }) {

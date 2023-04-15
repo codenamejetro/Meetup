@@ -7,11 +7,13 @@ import { fetchOneGroupThunk, updateGroupThunk, fetchGroupsThunk } from "../../st
 function UpdateGroupForm({currId}) {
     const { groupId } = useParams()
     const dispatch = useDispatch()
+    const history = useHistory()
 
     const sessionUser = useSelector(state => state.session.user);
     const allGroups = useSelector(state => state.groups.allGroups);
     const singleGroupImage = useSelector(state => state.groups.singleGroup.GroupImages)
     const group = allGroups[groupId]
+    console.log(group)
 
     const [location, setLocation] = useState(group.city + ', ' + group.state)
     const [groupName, setGroupName] = useState(group.name)
@@ -23,7 +25,7 @@ function UpdateGroupForm({currId}) {
     const [err, setErr] = useState({})
     const [displayErr, setDisplayErr] = useState(false)
 
-    // if (!sessionUser || sessionUser.id !== )
+    if (!sessionUser || sessionUser.id !== group.organizerId) history.push('/')
 
     useEffect(() => {
         // console.log('the currId ', groupId)
@@ -65,100 +67,116 @@ function UpdateGroupForm({currId}) {
     return (
         <>
             {url && <Redirect to={url} />}
-            <div>
-                <p>UPDATE YOUR GROUP'S INFORMATION</p>
-                <p>We'll walk you through a few steps to update your group's information</p>
-            </div>
-            <form onSubmit={onSubmit}>
+            <div className='create-form-huge-wrapper'>
 
-                <label>
-                    First, set your group's location
-                    <p>SeparateDown groups meet locally, in person and online. We'll connect you with people
-                        in your area, and more can join you online.</p>
-                    <input
-                        type="text"
-                        name="location"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder={'City, STATE'}
-                    />
-                </label>
-                {displayErr === true && err.location && (<p className="errors">· {err.location}</p>)}
+                <div className='create-form-separating-line create-form-top'>
+                    <p className="create-form-top-first">UPDATE YOUR GROUP'S INFORMATION</p>
+                    <h2 className="create-form-top-second">We'll walk you through a few steps to update your group's information</h2>
+                </div>
+                <form onSubmit={onSubmit}>
 
-                <label>
-                    What will your group's name be?
-                    <p>Choose a name that will give people a clear idea of what the group is about.
-                        Feel free to get creative! You can edit this later if you change your mind.</p>
-                    <input
-                        type="text"
-                        name="group-name"
-                        value={groupName}
-                        onChange={(e) => setGroupName(e.target.value)}
-                        placeholder={'What is your group name?'}
-                    />
-                </label>
-                {displayErr === true && err.groupName && (<p className="errors">· {err.groupName}</p>)}
+                    <div className="create-form-separating-line">
+                        <label className="create-form-label-location" >
+                            <h2>First, set your group's location.</h2>
+                            <p>SeparateDown groups meet locally, in person and online. We'll connect you with people
+                                in your area, and more can join you online.</p>
+                            <input
+                                type="text"
+                                name="location"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                placeholder={'City, STATE'}
 
-                <label htmlFor='group-about'>
-                    Now describe what your group will be about
-                    <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
-                    <div>
-                        1, What's the purpose of the group?
-                        2. Who should join?
-                        3. What will you do at your events?
+                            />
+                        </label>
                     </div>
-                    <textarea id='group-about' name='group-about' rows={'5'} cols={'50'} value={groupAbout} onChange={(e) => setGroupAbout(e.target.value)} placeholder={'Please write at least 30 characters'}></textarea>
-                </label>
-                {displayErr === true && err.groupAbout && (<p className="errors">· {err.groupAbout}</p>)}
+                    {displayErr === true && err.location && (<p className="errors">· {err.location}</p>)}
 
-                <label>
-                    Final steps...
-                    <p>Is this an in person or online group?</p>
-                    <select
-                        value={online}
-                        onChange={(e) => setOnline(e.target.value)}
-                    >
-                        <option value="" disabled>(select-one)</option>
+                    <div className="create-form-separating-line">
+                    <label className="create-form-label-name">
+                        <h2>What will your group's name be?</h2>
+                        <p>Choose a name that will give people a clear idea of what the group is about.
+                            Feel free to get creative! You can edit this later if you change your mind.</p>
+                        <input
+                            type="text"
+                            name="group-name"
+                            value={groupName}
+                            onChange={(e) => setGroupName(e.target.value)}
+                            placeholder={'What is your group name?'}
+                        />
+                    </label>
+                    </div>
+                    {displayErr === true && err.groupName && (<p className="errors">· {err.groupName}</p>)}
 
-                        <option value='In person' key={'in-person'}>
-                            In person
-                        </option>
-                        <option value='Online' key={'online'}>
-                            Online
-                        </option>
-                    </select>
-                    {displayErr === true && err.online && (<p className="errors">· {err.online}</p>)}
-                    <p>Is this group private or public?</p>
-                    <select
-                        value={isPrivate}
-                        onChange={(e) => setIsPrivate(!isPrivate)}
-                    >
-                        <option value='' disabled>(select-one)</option>
+                    <div className="create-form-separating-line">
+                    <label htmlFor='group-about'>
+                        <h2>Now describe what your group will be about</h2>
+                        <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
+                        <div className="create-form-label-about-list">
+                            1, What's the purpose of the group? <br />
+                            2. Who should join? <br />
+                            3. What will you do at your events?
+                        </div>
+                        <textarea id='group-about' name='group-about' rows={'5'} cols={'50'} value={groupAbout} onChange={(e) => setGroupAbout(e.target.value)} placeholder={'Please write at least 30 characters'}></textarea>
+                    </label>
+                    {displayErr === true && err.groupAbout && (<p className="errors">· {err.groupAbout}</p>)}
+                    </div>
 
-                        <option value={false} key={'public'}>
-                            Public
-                        </option>
-                        <option value={true} key={'private'}>
-                            Private
-                        </option>
-                    </select>
-                    {displayErr === true && err.isPrivate && (<p className="errors">· {err.isPrivate}</p>)}
+                    <div className="create-form-separating-line">
+                    <label>
+                        <h2>Final steps...</h2>
+                        <p>Is this an in person or online group?</p>
+                        <select
+                            value={online}
+                            onChange={(e) => setOnline(e.target.value)}
+                        >
+                            <option value="" disabled>(select-one)</option>
 
+                            <option value='In person' key={'in-person'}>
+                                In person
+                            </option>
+                            <option value='Online' key={'online'}>
+                                Online
+                            </option>
+                        </select>
 
-                    {/* <p>Please add an image url for your group below:</p>
-                    <input
-                        type="text"
-                        name="img"
-                        value={img}
-                        onChange={(e) => setImg(e.target.value)}
-                        placeholder={'Image Url'}
-                    /> */}
-                </label>
-                {displayErr === true && err.img && (<p className="errors">· {err.img}</p>)}
+                        {displayErr === true && err.online && (<p className="errors">· {err.online}</p>)}
+                        <p>Is this group private or public?</p>
+                        <select
+                            value={isPrivate}
+                            onChange={(e) => setIsPrivate(!isPrivate)}
+                        >
+                            <option value='' disabled>(select-one)</option>
 
-                <button type='submit' >Update Group</button>
+                            <option value={false} key={'public'}>
+                                Public
+                            </option>
+                            <option value={true} key={true}>
+                                Private
+                            </option>
+                        </select>
+                        {displayErr === true && err.isPrivate && (<p className="errors">· {err.isPrivate}</p>)}
 
-            </form>
+                        </label>
+                        </div>
+
+                        {/* <p>Please add an image url for your group below:</p>
+                        <input
+                            type="text"
+                            name="img"
+                            value={img}
+                            onChange={(e) => setImg(e.target.value)}
+                            placeholder={'Image Url'}
+                        />
+                    {displayErr === true && err.img && (<p className="errors">· {err.img}</p>)} */}
+
+                    <div className="create-form-submit-button-wrapper">
+                    <button className="create-form-submit-button" type='submit' >Update Group</button>
+
+                    </div>
+
+                </form>
+            </div>
         </>
     )
 }

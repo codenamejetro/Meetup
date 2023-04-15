@@ -62,16 +62,36 @@ function DisplayEvents() {
 
     return (
         <>
-            <div className='event-base-selection'>
-                <div className="at-event-button toggle-between">Events</div>
-                <div onClick={handleClick} className="toggle-between">Groups {url && <Redirect to={url} />}</div>
-            </div>
-            <section>
-                <div className='event-caption'>Events in SeparateDown</div>
-                <ul>
-                    {eventsToCome.map((event) => (
-                        // <NavLink className='style-all-links' to='/groups'>
-                        <NavLink className='style-all-links' to={`/events/${event.id}`}>
+            <div className="display-button-wrapper">
+                <section>
+                    <div className='group-base-selection'>
+                        <div className="at-event-button toggle-between">Events</div>
+                        <div onClick={handleClick} className="toggle-between">Groups {url && <Redirect to={url} />}</div>
+                    </div>
+                    <div className='group-caption'>Events in SeparateDown</div>
+                    <div>
+                        {eventsToCome.map((event) => (
+                            // <NavLink className='style-all-links' to='/groups'>
+                            <NavLink className='style-all-links' to={`/events/${event.id}`}>
+                                <div className="event-entire-card">
+                                    <div className='group-card'>
+                                        <img src={event.previewImage} />
+                                        <div className='group-card-info'>
+                                            <h3>{`${event.startDate.split("T")[0]} · ${event.startDate.split("T")[1].slice(0, event.startDate.split("T")[1].length - 8)}`}</h3>
+                                            <h4>{`${event.description}`}</h4>
+                                            <h5>{`${event.Venue.city}, ${event.Venue.state}`}</h5>
+                                        </div>
+                                    </div>
+                                    <div>desc</div>
+
+                                </div>
+
+                            </NavLink>
+                        ))}
+                    </div>
+
+                    <div className="event-prev-events"> Previous Events
+                        {prevEvents.map((event) => (
                             <div className="event-entire-card">
                                 <div className='event-card'>
                                     <img src={event.previewImage} />
@@ -79,37 +99,16 @@ function DisplayEvents() {
                                         <h3>{`${event.startDate.split("T")[0]} · ${event.startDate.split("T")[1].slice(0, event.startDate.split("T")[1].length - 8)}`}</h3>
                                         <h4>{`${event.description}`}</h4>
                                         <h5>{`${event.Venue.city}, ${event.Venue.state}`}</h5>
-                                        {/* <div className="event-card-info-bottom" >
-                                <p>{'hi'} members ·</p>
-                                <p>{'hi' ? `private` : `public`}</p>
-                            </div> */}
                                     </div>
                                 </div>
                                 <div>desc</div>
 
                             </div>
+                        ))}
+                    </div>
+                </section>
 
-                        </NavLink>
-                    ))}
-                </ul>
-
-                <div className="event-prev-events"> Previous Events
-                    {prevEvents.map((event) => (
-                        <div className="event-entire-card">
-                            <div className='event-card'>
-                                <img src={event.previewImage} />
-                                <div className='event-card-info'>
-                                    <h3>{`${event.startDate.split("T")[0]} · ${event.startDate.split("T")[1].slice(0, event.startDate.split("T")[1].length - 8)}`}</h3>
-                                    <h4>{`${event.description}`}</h4>
-                                    <h5>{`${event.Venue.city}, ${event.Venue.state}`}</h5>
-                                </div>
-                            </div>
-                            <div>desc</div>
-
-                        </div>
-                    ))}
-                </div>
-            </section>
+            </div>
         </>
 
     )

@@ -53,40 +53,56 @@ function ProfileButton({ user }) {
 
   return (
     <>
-    {user && (<button className='profile-button' onClick={(e) => openMenu(e)}>
-        <i className="fas fa-user-circle" />
-      </button>)}
-      {/* <button className='profile-button' onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button> */}
+      <div className='profile-button' onClick={(e) => openMenu(e)}>
+        <i className="fas fa-user-circle fa-2xl" />
+        {showMenu ? <i class="fa-solid fa-angle-up fa-xl"></i> : <i class="fas fa-angle-down fa-xl"></i>}
+      </div>
+
       <ul className={ulClassName} ref={ulRef}>
         {user && showMenu && (
           <div className='profile-button-logged-in' >
+
             <li>Hello {user.firstName}</li>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            <div className='for-styling'></div>
             <li>{user.email}</li>
-            <NavLink to='/groups-display'>View groups</NavLink>
-            <NavLink to='/events-display'>View events</NavLink>
-            <li>
-              <button onClick={(e) => logout(e)}>Log Out</button>
-            </li>
+            <div className='for-styling'></div>
+            <NavLink style={() => ({ color: "black", textDecoration: "none", fontWeight: "bold" })} to='/groups-display'>View groups</NavLink>
+            <div className='for-styling'></div>
+            <NavLink style={() => ({ color: "black", textDecoration: "none", fontWeight: "bold" })} to='/events-display'>View events</NavLink>
+            {/* <div className='for-styling for-styling-add-line'>-------------------</div> */}
+            <div className='for-styling for-styling-separation'>
+              <div className='profile-button-logout' onClick={(e) => logout(e)} style={{ fontWeight: "bold" }}>Log Out</div>
+            </div>
           </div>
         )}
-        {!user && (
-          <>
-            <OpenModalMenuItem
-              itemText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
-            <OpenModalMenuItem
-              itemText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
-          </>
+
+
+
+        {/* {!user && ((<div className='profile-button' onClick={(e) => openMenu(e)}>
+          <i className="fas fa-user-circle fa-2xl" />
+          <i class="fas fa-angle-down fa-xl"></i> */}
+
+        {!user && showMenu && (
+          <div className='profile-button-logged-out'>
+            <div className="profile-button-logged-out-each for-styling">
+              <OpenModalMenuItem
+                itemText="Log In"
+                onItemClick={closeMenu}
+                modalComponent={<LoginFormModal />}
+              />
+            </div>
+            <div className="profile-button-logged-out-each for-styling">
+              <OpenModalMenuItem
+                itemText="Sign Up"
+                onItemClick={closeMenu}
+                modalComponent={<SignupFormModal />}
+              />
+
+            </div>
+          </div>
         )}
+        {/* </div> */}
+        {/* ))} */}
       </ul>
     </>
   );

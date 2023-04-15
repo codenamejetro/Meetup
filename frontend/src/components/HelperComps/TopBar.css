@@ -8,7 +8,13 @@
 }
 
 .title-portion {
-padding-bottom: 1vh;
+padding-bottom: 5px;
+font-size: 25px;
+color: lightblue;
+}
+
+.top-bar-web-name {
+    color: cadetblue;
 }
 
 .profile-buttons {
@@ -24,4 +30,16 @@ padding-bottom: 1vh;
     margin-right: 2vh;
     text-decoration: none;
     color:cadetblue
+}
+
+.splash-options-display-text {
+    font-size: 22px;
+    color: teal;
+    margin-bottom: 4px;
+}
+
+.splash-options-display-smaller-text {
+    display: flex;
+    justify-content: center;
+
 }
