@@ -33,10 +33,10 @@ function EventShow() {
             <div className="event-wrapper-singular">
                 {/* <div className="event-wrapper-section"> */}
                 <div className="event-top-singular">
-                    <div className='event-bread-crumb-singular'> {`<`} <NavLink to='/events-display'>Events</NavLink></div>
 
                     <div className='event-title-singular'>
-                        <p>{event.name} <br /> </p>
+                        <div className='event-bread-crumb-singular'> {`<`} <NavLink to='/events-display'>Events</NavLink></div>
+                        <h2>{event.name}</h2>
                         <EventShowHost eventGroup={event} />
                     </div>
 

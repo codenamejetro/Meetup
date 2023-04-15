@@ -52,14 +52,14 @@ function GroupShow() {
                         </div>
                         <p>Organized by {singleGroup.Organizer.firstName} {singleGroup.Organizer.lastName}</p>
                         {sessionUser && sessionUser.id === singleGroup.Organizer.id && (
-                            <ul className="group-card-info-bottom-buttons-singular" >
+                            <div className="group-card-info-bottom-buttons-singular" >
                                 <NavLink style={() => ({ textDecoration: 'none', border: '2px solid black', padding: '2px 7px', color: 'white', backgroundColor: 'darkgray', boxShadow: '2px 2px 2px black', marginRight: '15px' })} to={`/groups/${groupId}/start-an-event`}>Create event</NavLink>
                                 <NavLink style={() => ({ textDecoration: 'none', border: '2px solid black', padding: '2px 5px', color: 'white', backgroundColor: 'darkgray', boxShadow: '2px 2px 2px black' })} to={`/groups/${groupId}/edit`}>Update </NavLink>
                                 <OpenModalMenuItem
                                     itemText="Delete"
                                     // onItemClick={closeMenu}
                                     modalComponent={<ConfirmDeleteGroup />} />
-                            </ul>
+                            </div>
                         )}
 
                         {sessionUser && sessionUser.id !== singleGroup.Organizer.id && <button onClick={handleJoin} className="group-card-singular-join">Join this group</button>}
