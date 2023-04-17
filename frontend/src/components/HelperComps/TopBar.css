@@ -1,0 +1,45 @@
+.nav-bar {
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    height: 10vh;
+    margin-bottom: 8vh;
+    border-bottom: 1px solid lightgray;
+}
+
+.title-portion {
+padding-bottom: 5px;
+font-size: 25px;
+color: lightblue;
+}
+
+.top-bar-web-name {
+    color: cadetblue;
+}
+
+.profile-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* padding-bottom: 1%; */
+    padding: 0% 1%;
+    /* margin-right: 7vh; */
+}
+
+.profile-buttons-start-group {
+    margin-right: 2vh;
+    text-decoration: none;
+    color:cadetblue
+}
+
+.splash-options-display-text {
+    font-size: 22px;
+    color: teal;
+    margin-bottom: 4px;
+}
+
+.splash-options-display-smaller-text {
+    display: flex;
+    justify-content: center;
+
+}

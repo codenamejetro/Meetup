@@ -1,16 +1,16 @@
 import React from "react";
 import { useModal } from "../../context/Modal";
 
-const Greeting = () => {
-    return (
-      <OpenModalButton
-        buttonText="Greeting"
-        modalComponent={<h2>Hello World!</h2>}
-        onButtonClick={() => console.log("Greeting initiated")}
-        onModalClose={() => console.log("Greeting completed")}
-      />
-    );
-  };
+// const Greeting = () => {
+//     return (
+//       <OpenModalButton
+//         buttonText="Greeting"
+//         modalComponent={<h2>Hello World!</h2>}
+//         onButtonClick={() => console.log("Greeting initiated")}
+//         onModalClose={() => console.log("Greeting completed")}
+//       />
+//     );
+//   };
 
 
 function OpenModalButton({

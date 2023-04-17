@@ -14,7 +14,6 @@ const eventImagesRouter = require('./event-images.js')
 const groupImagesRouter = require('./group-images.js')
 
 router.use(restoreUser);
-
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/groups', groupsRouter)
