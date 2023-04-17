@@ -74,6 +74,7 @@
     height: fit-content;
     max-height: calc(100vh - 210px);
     overflow-y: auto;
+    border: 4px solid black;
 }
 
 .login-modal-h1 {

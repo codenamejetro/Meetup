@@ -64,17 +64,23 @@ function EventShow() {
                                             </div>
 
                                             <div className="event-card-container-bottom-wrapper-singular">
-                                                <i class="fa-solid fa-person fa-2xl"></i>
-                                                <div className='event-card-in-person-label-singular'>{event.type === 'In person' ? `In Person` : 'Online'}</div>
+                                                <div className="event-card-container-bottom-online-singular">
+                                                    <i class="fa-solid fa-person fa-2xl"></i>
+                                                    <div className='event-card-in-person-label-singular'>{event.type === 'In person' ? `In Person` : 'Online'}</div>
+
+                                                </div>
                                                 {/* {sessionUser && CheckIfEventHost({event}, sessionUser) && <div> */}
                                                 {/* <div> */}
                                                 {/* <button onClick={(e) => handleClick(e)}>Update {url && <Redirect to={url} currId={Number(groupId)} />} </button> */}
-                                                <ul className="event-card-container-bottom-singular">
-                                                    <OpenModalMenuItem
-                                                        itemText="Delete"
-                                                        modalComponent={<ConfirmDeleteEvent />} />
-                                                    {/* </div> */}
-                                                </ul>
+                                                <div>
+
+                                                    <ul className="event-card-container-bottom-singular">
+                                                        <OpenModalMenuItem
+                                                            itemText="Delete"
+                                                            modalComponent={<ConfirmDeleteEvent />} />
+                                                        {/* </div> */}
+                                                    </ul>
+                                                </div>
 
                                             </div>
 

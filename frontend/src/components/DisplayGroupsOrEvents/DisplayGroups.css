@@ -335,6 +335,7 @@ h2 {
 }
 
 .event-prev-events {
+    margin-top: 5%;
     border-top: 1px solid black;
     /* margin-right: -40px; */
 }
@@ -506,11 +507,25 @@ border: 1px solid black;
 
 .event-card-container-bottom-wrapper-singular {
     display: flex;
+    justify-content: space-between;
 
     /* height: 30px; */
 }
 
 .event-card-container-bottom-wrapper-singular > i {
+    /* display: flex;
+    align-items: center;
+    height: 30px;
+    margin-left: 7px;
+    color: gray;
+    margin-right: 20px; */
+}
+
+.event-card-container-bottom-online-singular {
+    display: flex;
+}
+
+.event-card-container-bottom-online-singular > i {
     display: flex;
     align-items: center;
     /* height: 30px; */
@@ -550,7 +565,7 @@ border: 1px solid black;
     border: 1px solid black;
     color: white;
     background-color: grey;
-    margin-left: 200%;
+    /* margin-left: 200%; */
 }
 
 .event-card-in-person-label-singular {

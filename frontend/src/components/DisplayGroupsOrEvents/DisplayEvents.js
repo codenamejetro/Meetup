@@ -82,7 +82,7 @@ function DisplayEvents() {
                                             <h5>{`${event.Venue.city}, ${event.Venue.state}`}</h5>
                                         </div>
                                     </div>
-                                    <div>desc</div>
+                                    <div>{event.description}</div>
 
                                 </div>
 
