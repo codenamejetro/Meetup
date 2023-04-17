@@ -67,3 +67,180 @@
 .profile-button-logged-out-each {
     font-weight: bold;
 }
+
+#modal-content {
+    border-radius: 10px;
+    width: 40%;
+    height: fit-content;
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+
+.login-modal-h1 {
+    display: flex;
+    /* justify-self: center; */
+    justify-content: center;
+    margin-bottom: -2%;
+}
+
+.login-modal-form {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+
+.login-modal-content {
+    display: flex;
+    flex-direction: column;
+    /* align-items: start; */
+    margin: 2% 5%;
+}
+
+.login-modal-labels {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* margin-right: 42%; */
+    margin: 2% 0%;
+}
+
+.login-modal-labels > div {
+    margin-top: 1%;
+}
+
+.login-modal-inputs {
+    display: flex;
+    justify-content: end;
+    /* align-items: center; */
+    width: 20%;
+    /* height: 20%; */
+    padding: 1% 40% ;
+    margin-top: 1%;
+    border: 3px solid black;
+}
+
+.login-modal-button-div {
+    display: flex;
+    justify-content: center;
+}
+
+.login-modal-button {
+    margin: 3% 0%;
+    background-color: red;
+    box-shadow: 4px 4px 2px black;
+    color: white;
+    width: 90%;
+    /* height: 100%; */
+    padding: 4% 2%;
+    font-size: 1em;
+}
+
+.login-modal-demo {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: teal;
+    text-decoration: underline;
+}
+
+.signup-modal-h1 {
+    display: flex;
+    /* justify-self: center; */
+    justify-content: center;
+    margin-bottom: -1%;
+}
+
+.signup-modal-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-modal-content {
+    display: flex;
+    flex-direction: column;
+    /* align-items: start; */
+    margin: 2% 5%;
+}
+
+.signup-modal-labels {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* margin-right: 42%; */
+    margin: 2% 0%;
+}
+
+.signup-modal-labels > div {
+    margin-top: 1%;
+}
+
+.signup-modal-inputs {
+    display: flex;
+    justify-content: end;
+    /* align-items: center; */
+    width: 20%;
+    /* height: 20%; */
+    padding: 1% 40% ;
+    margin-top: 1%;
+    border: 3px solid black;
+}
+
+.signup-modal-inputs-pairs {
+    margin-bottom: -5%;
+}
+
+.signup-modal-button-div {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+
+.signup-modal-button {
+    margin: 3% 0%;
+    background-color: red;
+    box-shadow: 2px 2px 1px black;
+    border: 2px solid black;
+    color: white;
+    width: 80%;
+    /* height: 100%; */
+    padding: 4% 2%;
+    font-size: 1em;
+}
+
+.confirm-delete-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.confirm-title {
+    margin-bottom: -1%;
+}
+
+
+.confirm-buttons {
+    display: flex;
+    justify-content: center;
+    border: 1.5px solid black;
+    box-shadow: 2px 2px 2px black;
+    padding: 2.5% 20%;
+    margin: 1.5% 0%;
+    width: 50%;
+    /* font-size: 5%; */
+    color:white
+}
+
+.confirm-question {
+    margin-top: 3%;
+}
+
+.confirm-delete {
+    margin-top: 5%;
+    background-color: red;
+
+}
+
+.confirm-keep {
+    margin-bottom: 5%;
+    background-color: darkgray;
+}
