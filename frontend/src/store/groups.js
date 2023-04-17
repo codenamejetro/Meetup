@@ -81,6 +81,7 @@ export const createGroupThunk = (group) => async (dispatch) => {
     } else return null
 }
 export const updateGroupThunk = (group, groupId) => async (dispatch) => {
+    console.log("this is group", group)
     const response = await csrfFetch(`/api/groups/${groupId}`, {
         method: 'PUT',
         headers: {
@@ -88,10 +89,11 @@ export const updateGroupThunk = (group, groupId) => async (dispatch) => {
         },
         body: JSON.stringify(group)
     })
+    console.log("this is response", response)
     if (response.ok) {
         const data = await response.json()
         dispatch(updateGroup(data))
-
+        console.log("hiiii")
     } else return null
 
 }
@@ -138,15 +140,14 @@ const groupsReducer = (state = initialState, action) => {
             // newArr.forEach(group => newState.allGroups[group.id] = group)
             return newState
         case UPDATE_GROUP:
-            console.log("this is action.group ", action.group)
+            // console.log("this is action.group ", action.group)
             newState = { ...state, singleGroup: { ...theGroup } }
             const newArr = [action.group]
             // console.log(newArr)
             newArr.forEach(group => newState.allGroups[group.id] = group)
-            console.log(newState)
+            // console.log(newState)
             return newState
         case DELETE_GROUP:
-            // console.log("this is action", action)
             newState = { ...state, allGroups: {} }
             delete newState[action.allGroups[action.groupId]]
             return newState

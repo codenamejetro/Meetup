@@ -17,9 +17,7 @@ function EventShow() {
 
     const sessionUser = useSelector(state => state.session.user);
     const allEvents = useSelector(state => state.events.allEvents);
-    // console.log(sessionUser)
     const event = allEvents[eventId]
-    console.log("tyughyiy", event)
 
     useEffect(() => {
         dispatch(fetchEventsThunk())
@@ -106,38 +104,5 @@ function EventShow() {
         </>
     )
 }
-
-
-// function CheckIfEventHost( {event}, sessionUser ) {
-//     const [loading, setLoading] = useState(true);
-//     const dispatch = useDispatch()
-
-//     console.log(event)
-//     const groupId = event.groupId
-//     const group = useSelector(state => state.groups.allGroups)
-//     const theGroup = group[groupId]
-//     const theOrg = theGroup.Organizer
-//     console.log('1', theGroup)
-//     // const org = group.Organizer
-//     // console.log('2', org)
-//     // const id = org.id
-//     // console.log('3', id)
-// useEffect(() => {
-//     if (loading) {
-//         setLoading(false)
-//         dispatch(fetchGroupsThunk())
-//     }
-// }, [loading])
-
-
-//     if (!group) return null
-
-//     if (!theOrg) return null
-//     // if (!id) return null
-//     return sessionUser.id === theOrg.id ? true : false
-//     // return id && console.log("hi")
-//     // return ''
-
-// }
 
 export default EventShow

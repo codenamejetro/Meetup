@@ -13,7 +13,6 @@ function UpdateGroupForm({currId}) {
     const allGroups = useSelector(state => state.groups.allGroups);
     const singleGroupImage = useSelector(state => state.groups.singleGroup.GroupImages)
     const group = allGroups[groupId]
-    console.log(group)
 
     const [location, setLocation] = useState(group.city + ', ' + group.state)
     const [groupName, setGroupName] = useState(group.name)
@@ -28,7 +27,6 @@ function UpdateGroupForm({currId}) {
     if (!sessionUser || sessionUser.id !== group.organizerId) history.push('/')
 
     useEffect(() => {
-        // console.log('the currId ', groupId)
         dispatch(fetchGroupsThunk())
         dispatch(fetchOneGroupThunk(groupId))
     }, [dispatch])
@@ -51,7 +49,7 @@ function UpdateGroupForm({currId}) {
         }
         else {
             const locationSeparated = location.split(', ')
-            const group = { name: groupName, about: groupAbout, type: online, private: isPrivate, city: locationSeparated[0], state: locationSeparated[1] }
+            const group = { name: groupName, about: groupAbout, type: online, private: `${isPrivate}`, city: locationSeparated[0], state: locationSeparated[1] }
 
             dispatch(updateGroupThunk(group, groupId))
 

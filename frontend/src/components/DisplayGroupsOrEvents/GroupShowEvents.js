@@ -7,16 +7,16 @@ import { NavLink } from "react-router-dom";
 
 function GroupShowEvents({groupId}) {
     const dispatch = useDispatch()
-    console.log(groupId)
+    // console.log(groupId)
 
     const eventsInitial = useSelector(state => state.events.allEvents);
     const events = Object.values(eventsInitial)
 
-    console.log("events: ", events)
+    // console.log("events: ", events)
     const eventsForGroup = events.filter(event => event.groupId === +groupId)
     let eventsToCome = []
     let prevEvents = []
-    console.log("eventsForGroup: ", eventsForGroup)
+    // console.log("eventsForGroup: ", eventsForGroup)
 
     eventsForGroup.forEach(event => {
         if (new Date(event.startDate) > new Date()) {
