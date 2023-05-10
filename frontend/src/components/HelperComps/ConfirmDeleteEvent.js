@@ -12,7 +12,7 @@ function ConfirmDeleteEvent () {
 
 
     const theEventId = useSelector(state => state.events.singleEvent.id)
-    console.log("the Event Id ", theEventId)
+    // console.log("the Event Id ", theEventId)
     const deleteClick = (e) => {
         dispatch(deleteEventThunk(theEventId))
         history.push('/events-display')

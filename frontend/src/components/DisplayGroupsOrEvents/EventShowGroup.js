@@ -41,6 +41,8 @@ export function EventShowHost({ event }) {
 
 
 
+
+
 function EventShowGroup({ event }) {
     const dispatch = useDispatch()
 
